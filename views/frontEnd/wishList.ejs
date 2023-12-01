@@ -1,0 +1,223 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Furnish Nest</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/frontEnd/images/banner/logo.png">
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="/frontEnd/stylesheets/main.css?v=3.4">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/unfetch@4.1.1/dist/unfetch.umd.js"></script>
+    <style>
+        /* Define the animation for the heading */
+@keyframes slideIn {
+    0% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Style the cart heading and apply the animation */
+.cart-heading {
+    text-align: center;
+    padding: 20px;
+}
+
+.animated-heading {
+    font-size: 36px;
+    font-weight: bold;
+    animation: slideIn 0.5s ease;
+}
+
+/* Add more styles to your liking */
+/* You can customize the font, color, and other properties of the heading */
+
+    </style>
+</head>
+
+<body>
+    <main class="main">
+        <section class="mt-50 mb-50">
+            <div class="container">
+                <% if (wishList && wishList.products && wishList.products.length> 0) { %>
+                <section class="cart-heading">
+                    <h1 class="animated-heading">Your WishList</h1>
+                </section>
+                <div class="row">
+                    <div class="col-12">
+                    <div class="tab-pane fade show active" id="tab-one" role="tabpanel" aria-labelledby="tab-one">
+                        <div class="row product-grid-4">
+                          
+                            <% for(product of wishList.products ) { %>
+                                <!--Product card start-->
+                                <div class="col-lg-3 col-md-3 col-12 col-sm-6" id="card_<%=product._id%>">
+                                    <div class="product-cart-wrap mb-30" style="height: 350px;">
+                                        <div class="product-img-action-wrap">
+                                            <div class="product-img product-img-zoom">
+                                                <a href="/product/productDetails?id=<%= product._id %>">
+                                                    <img class="default-img" src="/backEnd/images/cropped_image/<%=product.productImage[0] %>"
+                                                        alt="product" width="200" height="200">
+                                                    <img class="hover-img" src="/backEnd/images/cropped_image/<%=product.productImage[1] %>"
+                                                        alt="product-hover" width="200" height="200">
+                                                </a>
+                                            </div>
+                                            <div class="product-action-1">
+                            
+                            
+                                            </div>
+                                            <div class="product-badges product-badges-position product-badges-mrg">
+                                            </div>
+                                        </div>
+                                        <div class="product-content-wrap">
+                                            <div class="product-category">
+                                                <a href="#">
+                                                    <%= product.categoryName %>
+                                                </a>
+                                            </div>
+                                            <h5 id="pro-name"><a href="#">
+                                                    <%= product.productName.slice(0, 55) + (product.productName.length> 55 ? '...' : '') %>
+                                                </a></h5>
+                                            <div class="rating-result" title="90%">
+                                                <span>
+                                                    <span>90%</span>
+                                                </span>
+                                            </div>
+                                            <div class="product-price">
+                                                <span>
+                                                    <%= product.sellingPrice %>
+                                                </span>
+                                                <span class="old-price">
+                                                    <%= product.regularPrice %>
+                                                </span>
+                                            </div>
+                                            <div class="product-action-1 show">
+                                                <a aria-label="Remove From Wishlist" class="action-btn hover-up"
+                                                    onclick="removeWishList('<%=product._id%>')"><i class="fas fa-trash mt-3"></i></a>
+                                                <a aria-label="Add To Cart" id="cart_<%=product._id%>" class="action-btn hover-up"
+                                                    onclick="updateCartCount('<%=product._id%>')"><i class="fas fa-shopping-bag mt-2"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!--card end-->
+                                <% } %>
+                            <% }else{%>
+                                <div id="wishlist-container" class="empty-wishlist">
+                                    <img width="300" height="300" src="https://cdn3.iconfinder.com/data/icons/shopping-and-ecommerce-28/90/empty_cart-512.png" alt="Empty Wishlist Illustration">
+                                    <h1>Your Wishlist is Empty</h1>
+                                    <p>Explore our products and add your favorites to the wishlist.</p>
+                                    
+                                </div>
+                           <% } %>
+                           
+                        </div>
+                        
+                    </div>
+                        
+                        <div class="cart-action text-end">
+                   
+                            <a class="btn " href="/continueShopping"><i class="fas fa-shopping-bag mr-10"></i>Continue Shopping</a>
+                        </div>
+                        <div class="divider center_icon mt-50 mb-50"><i class="fas fa-fingerprint"></i></div>
+                        <div class="row mb-50">
+                      
+                                
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <script>
+       async function updateCartCount(id) {
+            try {
+                const response = await fetch(`/addToCart?id=${id}`);
+                const data = await response.json();
+
+                console.log(data);
+
+                if (data.message === "Out of Stock") {
+                    alert("Out of stock");
+                } else {
+                    document.getElementById(`cart_${id}`).setAttribute("aria-label", "Added to cart");
+                    document.getElementById("cart-count").innerHTML = data.length;
+                }
+            } catch (error) {
+                console.error(error.message);
+            }
+        }
+            function removeWishList(id){
+                    $.ajax({
+                    type: 'GET',
+                    url: `/removeWishList?id=${id}`, // Route on the server to handle password change
+                    success: function (response) {
+                        if (response.response === 'removed') {
+                            // Display a SweetAlert for incorrect old password
+                            $(`#card_${id}`).remove()
+                        } else if (response.response == "alreadyAdded") {
+                            alert("Already added")
+                        }
+                    },
+                    error: function (error) {
+                        // Handle other errors, if any
+                    }
+                });
+            }
+        </script>
+    </main>
+    <!-- Preloader Start -->
+    <!-- <div id="preloader-active">
+        <div class="preloader d-flex align-items-center justify-content-center">
+            <div class="preloader-inner position-relative">
+                <div class="text-center">
+                    <h5 class="mb-5">Now Loading</h5>
+                    <div class="loader">
+                        <div class="bar bar1"></div>
+                        <div class="bar bar2"></div>
+                        <div class="bar bar3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+</body>
+
+</html>
+<!-- Vendor JS-->
+<script src="/frontEnd/javascripts/vendor/modernizr-3.6.0.min.js"></script>
+<script src="/frontEnd/javascripts/vendor/jquery-3.6.0.min.js"></script>
+<script src="/frontEnd/javascripts/vendor/jquery-migrate-3.3.0.min.js"></script>
+<script src="/frontEnd/javascripts/vendor/bootstrap.bundle.min.js"></script>
+<script src="/frontEnd/javascripts/plugins/slick.js"></script>
+<script src="/frontEnd/javascripts/plugins/jquery.syotimer.min.js"></script>
+<script src="/frontEnd/javascripts/plugins/wow.js"></script>
+<script src="/frontEnd/javascripts/plugins/jquery-ui.js"></script>
+<script src="/frontEnd/javascripts/plugins/perfect-scrollbar.js"></script>
+<script src="/frontEnd/javascripts/plugins/magnific-popup.js"></script>
+<script src="/frontEnd/javascripts/plugins/select2.min.js"></script>
+<script src="/frontEnd/javascripts/plugins/waypoints.js"></script>
+<script src="/frontEnd/javascripts/plugins/counterup.js"></script>
+<script src="/frontEnd/javascripts/plugins/jquery.countdown.min.js"></script>
+<script src="/frontEnd/javascripts/plugins/images-loaded.js"></script>
+<script src="/frontEnd/javascripts/plugins/isotope.js"></script>
+<script src="/frontEnd/javascripts/plugins/scrollup.js"></script>
+<script src="/frontEnd/javascripts/plugins/jquery.vticker-min.js"></script>
+<!-- Template  JS -->
+<script src=".//frontEnd/javascripts/main.js?v=3.4"></script>
+<script src=".//frontEnd/javascripts/shop.js?v=3.4"></script>
+
+</body>
+
+</html>

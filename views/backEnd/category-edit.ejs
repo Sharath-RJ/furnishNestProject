@@ -1,0 +1,58 @@
+<%- include('../partials/admin/header.ejs') %>
+    <section class="content-main">
+        <div class="content-header">
+            <div>
+                <h2 class="content-title card-title">Update Categories </h2>
+                <!-- <p>Add, edit or delete a category</p> -->
+            </div>
+            <div>
+                <!-- <input type="text" placeholder="Search Categories" class="form-control bg-white"> -->
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <form action="/admin/category/updateCategory" method="post" enctype="multipart/form-data"
+                            onsubmit="return validateCategory(edit=true)">
+                            <input type="hidden" value="<%= category._id %>" name="category_id">
+                            <div class="mb-4">
+                                <label for="product_name" class="form-label">Name</label>
+                                <input type="text" placeholder="Type here" value="<%= category.categoryName %>"
+                                    name="categoryName" class="form-control" id="categoryName" />
+                                <p id="categoryNameError"></p>
+                            </div>
+                            <div class="mb-4">
+                                <label for="product_name" class="form-label">Image</label>
+                                <img src="/backEnd/images/category_image/<%= category.categoryImage %>"
+                                    id="category_image" alt="upload" width="75" height="75">
+                                <input type="file" placeholder="Type here" name="categoryImage" class="form-control"
+                                    id="categoryImage" onchange="viewCategoryImage(event)" />
+                                <p id="categoryImageError"></p>
+                            </div>
+                            <div class="mb-4 ">
+                                <label class="form-label">Description</label>
+                                <textarea name="categoryDescription" placeholder="Type here" class="form-control"
+                                    id="categoryDescription"><%= category.categoryDescription %></textarea>
+                                <p id="categoryDescriptionError"></p>
+                            </div>
+                            <div class="mb-4">
+                                <label for="product_name" class="form-label">Discount (Optional)</label>
+                                <input type="text" placeholder="Type here" value="<%= category.discount %>" name="categoryDiscount"
+                                    class="form-control" id="categoryDiscount" />
+                                <p id="categoryDiscountError"></p>
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Update category</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="table-responsive">
+                        </div>
+                    </div> <!-- .col// -->
+                </div> <!-- .row // -->
+            </div> <!-- card body .// -->
+        </div> <!-- card .// -->
+    </section> <!-- content-main end// -->
+    <%- include('../partials/admin/footer.ejs') %>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Furnish Nest</title>
+    <!-- <style>
+        body {
+            margin-top: 20px;
+            color: #1a202c;
+            text-align: left;
+            background-color: #e2e8f0;
+        }
+        .main-body {
+            padding: 15px;
+        }
+        .card {
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06);
+        }
+        .card {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            word-wrap: break-word;
+            background-color: #fff;
+            background-clip: border-box;
+            border: 0 solid rgba(0, 0, 0, .125);
+            border-radius: .25rem;
+        }
+        .card-body {
+            flex: 1 1 auto;
+            min-height: 1px;
+            padding: 1rem;
+        }
+        .gutters-sm {
+            margin-right: -8px;
+            margin-left: -8px;
+        }
+        .gutters-sm>.col,
+        .gutters-sm>[class*=col-] {
+            padding-right: 8px;
+            padding-left: 8px;
+        }
+        .mb-3,
+        .my-3 {
+            margin-bottom: 1rem !important;
+        }
+        .bg-gray-300 {
+            background-color: #e2e8f0;
+        }
+        .h-100 {
+            height: 100% !important;
+        }
+        .shadow-none {
+            box-shadow: none !important;
+        }
+        input {
+            width: 100%;
+        }
+    </style> -->
+</head>
+<body>
+        <div class="card">
+            <div class="card-header">
+                <h5>Edit Address</h5>
+            </div>
+            <div class="card-body">
+                <form action="" method="post" id="editAddress" >
+                    <div class="form-group">
+                        <input type="text"  id="firstName" value="<%= address.firstName %>" name="firstName"
+                            placeholder="First name *">
+                            <p class="text-danger" id="firstNameError"></p>
+                    </div>
+                    <div class="form-group">
+                        <input type="text"  id="lastName" value="<%= address.lastName %>" name="lastName"
+                            placeholder="Last name *">
+                            <p class="text-danger" id="lastNameError"></p>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="address" id="address" value="<%= address.address %>" 
+                            placeholder="Address *">
+                        <p class="text-danger" id="addressError"></p>
+                    </div>
+                    <div class="form-group">
+                        <input  type="text" id="city" value="<%= address.city %>" name="city" placeholder="City / Town *">
+                        <p class="text-danger" id="cityError"></p>
+                    </div>
+                    <div class="form-group">
+                        <input  type="text" id="state" value="<%= address.state%>" name="state"
+                            placeholder="State / County *">
+                        <p class="text-danger" class="text-danger" id="stateError"></p>
+                    </div>
+                    <div class="form-group">
+                        <input  type="text" id="pincode" name="zipcode" value="<%= address.pincode %>"
+                            placeholder="Postcode / ZIP *">
+                        <p class="text-danger" id="zipcodeError"></p>
+                    </div>
+                    <div class="form-group">
+                        <input  type="text" id="landMark" value="<%= address.landMark %>" name="landMark"
+                            placeholder="Land Mark*">
+                        <p  class="text-danger" id="landMarkError"></p>
+                    </div>
+                    <div class="form-group">
+                        <input  type="text" id="phone" value="<%= address.phone %>" name="phone" placeholder="Phone *">
+                        <p class="text-danger" id="phoneError"></p>
+                    </div>
+                    <div class="form-group">
+                        <input  type="text" id="email" value="<%= address.email %>" name="email"
+                            placeholder="Email address *">
+                        <p class="text-danger" id="emailError"></p>
+                    </div>
+                    <button type="submit">Update</button>
+                </form>
+            </div>
+        </div>
+<script>
+    alert("hello")
+    //  alert("idhsiahdsaud")
+    //   function  validateForm(){
+    //     var firstName=document.getElementById('firstName').value;
+    //     var lastName=document.getElementById('lastName').value;
+    //     var address=document.getElementById('address').value;
+    //     var city=document.getElementById('city').value;
+    //     var state=document.getElementById('state').value;
+    //     var phone=document.getElementById('phone').value;
+    //     var landMark=document.getElementById('landMark').value;
+    //     var pincode=document.getElementById('pincode').value;
+    //     var email=document.getElementById('email').value;
+    //     var firstNameError=""
+    //     var lastNameError=""
+    //     var addressError=""
+    //     var cityError=""
+    //     var stateError=""
+    //     var phoneError=""
+    //     var landMarkError=""
+    //     var pincodeError=""
+    //     var emailError=""
+    //     if(firstName.trim()=='')
+    //        firstNameError="First name is required"
+    //     if(lastName.trim()=="")
+    //        lastNameError="Last namr is required"
+    //     if(address.trim()=="")
+    //       addressError="Address is required"
+    //     if(city.trim()=="")
+    //       cityError="city is required"
+    //     if(state.trim()=="")
+    //      stateError="state is required"
+    //     if(phone.trim()=="")
+    //       phoneError="Phone is required"
+    //     if(landMark.trim()=="")
+    //       landMarkError="Landmark is required"
+    //     if(pincode.trim()=="")
+    //       pincodeError="Pincode is required"
+    //     if(email.trim()=='')
+    //       emailError="Email is required"
+    //     if(firstNameError|| lastNameError|| addressError||cityError||stateError||phoneError||landMarkError||pincodeError||emailError)
+    //     {
+    //         document.getElementById('firstNameError').innerHTML=firstNameError
+    //         document.getElementById('lastNameError').innerHTML=lastNameError
+    //         document.getElementById('addressError').innerHTML=addressError
+    //         document.getElementById('cityError').innerHTML=cityError
+    //         document.getElementById('stateError').innerHTML=stateError
+    //         document.getElementById('phoneError').innerHTML=phoneError
+    //         document.getElementById('landMarkError').innerHTML=landMarkError
+    //         document.getElementById('pincodeError').innerHTML=pincodeError
+    //         document.getElementById('emailError').innerHTML=emailError
+    //         return false
+    //     }
+    //     else{
+    //         return true
+    //     }
+    //   }
+    // $(document).ready(function () {
+    //     console.log("Hello world")
+    //     // Handle form submission
+    //     $('#editAddress').submit(function (event) {
+    //         event.preventDefault();
+    //         // Call the form validations function
+    //         // const isFormValid = validateForm();
+    //         // Call the AJAX request if form validation passes
+    //         const isValid=validateForm()
+    //         if (isValid) {
+    //             const formData = $(this).serialize()
+    //             console.log(formData)
+    //             // Send a POST request via AJAX to the server
+    //             $.ajax({
+    //                 type: 'POST',
+    //                 url: '/editingAddress', // Route on the server to handle password change
+    //                 data: formData,
+    //                 success: function (response) {
+    //                     alert("nsjdj")
+    //                     if (response.response === 'notUpdated') {
+    //                         // Display a SweetAlert for incorrect old password
+    //                         Swal.fire({
+    //                             icon: 'error',
+    //                             title: 'Old Password Incorrect',
+    //                             text: 'Please enter the correct old password.',
+    //                         });
+    //                     } else {
+    //                         Swal.fire({
+    //                             icon: 'success',
+    //                             title: 'Password Changed',
+    //                             text: 'successfully',
+    //                         });
+    //                         // Password changed successfully, you can handle this case
+    //                         // e.g., redirect to a success page or show a success message
+    //                     }
+    //                 },
+    //                 error: function (error) {
+    //                     // Handle other errors, if any
+    //                 }
+    //             });
+    //         }
+    //     });
+    // });
+    </script>
+<script src="./frontEnd/javascripts/main.js?v=3.4"></script>
+</body>
+</html>

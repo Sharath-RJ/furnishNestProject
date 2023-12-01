@@ -1,0 +1,204 @@
+<%- include('../partials/admin/header.ejs') %>
+    <section class="content-main">
+        <div class="content-header">
+            <div>
+                <h2 class="content-title card-title">Order detail</h2>
+                <p>Details for Order ID: <%=cancelDetails.orderId._id %>
+                </p>
+            </div>
+        </div>
+        <div class="card">
+            <header class="card-header">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 col-md-6 mb-lg-0 mb-15">
+                        <span>
+                            <i class="material-icons ">calendar_today</i> <b>
+                                <%=cancelDetails.orderId.date %>
+                            </b>
+                        </span> <br>
+                        <small class="text-muted">Order ID: <%=cancelDetails.orderId._id %></small>
+                    </div>
+                    <!-- <div class="col-lg-6 col-md-6 ms-auto text-md-end">
+                            <select class="form-select d-inline-block mb-lg-0 mb-15 mw-200">
+                                <option>Change status</option>
+                                <option>Awaiting payment</option>
+                                <option>Confirmed</option>
+                                <option>Shipped</option>
+                                <option>Delivered</option>
+                            </select>
+                            <a class="btn btn-primary" href="#">Save</a>
+                            <a class="btn btn-secondary print ms-2" href="#"><i
+                                    class="icon material-icons md-print"></i></a>
+                        </div> -->
+                </div>
+            </header> <!-- card-header end// -->
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-7">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th width="40%">Product</th>
+                                        <th width="20%">Unit Price</th>
+                                        <th width="20%">Quantity</th>
+                                        <th width="20%" class="text-end">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% cancelDetails.orderId.products.forEach((element)=> { %>
+                                        <tr>
+                                            <td>
+                                                <a class="itemside" href="#">
+                                                    <div class="left">
+                                                        <img src="/backEnd/images/cropped_image/<%= element.image[0] %>"
+                                                            width="40" height="40" class="img-xs" alt="Item">
+                                                    </div>
+                                                    <div class="info">
+                                                        <%= element.name %>
+                                                    </div>
+                                                </a>
+                                            </td>
+                                            <td>₹ <%= element.sellingPrice %>
+                                            </td>
+                                            <td>
+                                                <%= element.quantity %>
+                                            </td>
+                                            <td class="text-end">₹ <%= element.sellingPrice * element.quantity %>
+                                            </td>
+                                        </tr>
+                                        <% }); %>
+
+                                            <tr>
+                                                <td colspan="4">
+                                                    <article class="float-end">
+                                                        <dl class="dlist">
+                                                            <dt>Subtotal:</dt>
+                                                            <dd>₹ <%=cancelDetails.orderId.total %>
+                                                            <dd>
+                                                            </dd>
+                                                        </dl>
+                                                        <dl class="dlist">
+                                                            <dt>Shipping cost:</dt>
+                                                            <dd>₹0</dd>
+                                                        </dl>
+                                                        <dl class="dlist">
+                                                            <dt>Grand total:</dt>
+                                                            <dd> <b class="h5">₹ <%=cancelDetails.orderId.total+0 %></b>
+                                                            </dd>
+                                                        </dl>
+                                                        <dl class="dlist">
+                                                            <dt class="text-muted">Status:</dt>
+                                                            <dd>
+                                                                <%if (cancelDetails.orderId.status=="Cancelled" ) { %>
+                                                                    <span
+                                                                        class="badge rounded-pill alert-danger text-danger">
+                                                                        <%= cancelDetails.orderId.status %>
+                                                                    </span>
+                                                                    <%}else{%>
+                                                                        <span
+                                                                            class="badge rounded-pill alert-success text-success">
+                                                                            <%= cancelDetails.orderId.status %>
+                                                                        </span>
+                                                                        <% } %>
+                                                            </dd>
+                                                            <dd>
+                                                                <% if (cancelDetails.orderId.paymentMethod=="online_payment" ) { %>
+                                                                    <span class="badge rounded-pill alert-success text-success">
+                                                                        payment done
+                                                                    </span>
+                                                                    <% }else if(cancelDetails.orderId.paymentMethod=="Wallet_payment" ){%>
+                                                                        <span class="badge rounded-pill alert-success text-success">
+                                                                            Wallet Payment
+                                                                        </span>
+                                                                        <%}else{%>
+                                                                            <span class="badge rounded-pill alert-success text-success">
+                                                                                payment Pending
+                                                                            </span>
+                                                                            <%}%>
+                                                            </dd>
+                                                        </dl>
+                                                    </article>
+                                                </td>
+                                            </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- <a class="btn btn-primary" href="page-orders-tracking.html">View Order Tracking</a> -->
+                    </div>
+                    <div class="col-lg-1"></div>
+                    <div class="col-lg-4">
+                        <div class="box shadow-sm bg-light">
+
+                        </div>
+                        <div class="h-25 pt-4">
+                            <div class="mb-3">
+
+                                <button
+                                        class="btn btn-primary bg-success" onclick="acceptCancel('<%=cancelDetails.orderId._id%>','<%=cancelDetails.userId._id%>')">Accept</button>
+                                <a href="/admin/rejectReturn"><button
+                                        class="btn btn-primary bg-danger">reject</button></a>
+                            </div>
+
+                        </div>
+                    </div> <!-- col// -->
+                </div>
+            </div> <!-- card-body end// -->
+        </div> <!-- card end// -->
+    </section> <!-- content-main end// -->
+
+    <script>
+     function acceptCancel(orderId, userId) {
+            $.ajax({
+                type: "GET",
+                url: `/admin/acceptCancelation?orderId=${orderId}&userId=${userId}`, // Route on the server to handle password change
+                success: function (response) {
+                    alert(response)
+                    if (response.response === "Cancelled") {
+                        // Display a SweetAlert for incorrect old password
+                        Swal.fire({
+                            icon: "success",
+                            html: '<p style="color: green;">Order Cancelled</p>',
+                        })
+                        // document.getElementById('reject' + `${i}`).style.display = "none";
+                        // document.getElementById('accept' + `${i}`).style.display = "none";
+                    } else if (response.response == "Refunded") {
+                        Swal.fire({
+                            icon: "success",
+                            html: '<p style="color: green;">Order Cancelled and Refunded</p>',
+                        })
+                    } else if (response.response == "RefundedWallet") {
+                        Swal.fire({
+                            icon: "success",
+                            html: '<p style="color: green;">Order Cancelled and Refunded to Wallet</p>',
+                        })
+                    }
+                },
+                error: function (error) {
+                    // Handle other errors, if any
+                },
+            })
+        }
+        function rejectCancel(orderId, userId) {
+            $.ajax({
+                type: "GET",
+                url: `/admin/rejectCancelation?orderId=${orderId}&userId=${userId}`, // Route on the server to handle password change
+                success: function (response) {
+                    if (response.response === "Cancelled") {
+                        // Display a SweetAlert for incorrect old password
+                        Swal.fire({
+                            icon: "success",
+                            html: '<p style="color: green;">Cancelation Declined</p>',
+                        })
+                        // document.getElementById('reject' + `${i}`).style.display = "none";
+                        // document.getElementById('accept' + `${i}`).style.display = "none";
+                    } else {
+                    }
+                },
+                error: function (error) {
+                    // Handle other errors, if any
+                },
+            })
+        }
+    </script>
+    <%- include('../partials/admin/footer.ejs') %>

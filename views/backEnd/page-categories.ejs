@@ -1,0 +1,188 @@
+<%- include('../partials/admin/header.ejs') %>
+    <section class="content-main">
+        <div class="content-header">
+            <div>
+                <h2 class="content-title card-title">Categories </h2>
+                <p>Add, edit or delete a category</p>
+            </div>
+            <div>
+                <input type="text" placeholder="Search Categories" class="form-control bg-white">
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <form action="/admin/category/createCategory" method="post" onsubmit="return validateCategory()"
+                            enctype="multipart/form-data">
+                            <div class="mb-4">
+                                <label for="product_name" class="form-label">Name</label>
+                                <input type="text" placeholder="Type here" name="categoryName" class="form-control"
+                                    id="categoryName" />
+                                <p class="text-danger" id="categoryNameError"></p>
+                            </div>  
+                            <div class="mb-4">
+                                <label for="product_name" class="form-label">Image</label>
+                                <img src="/backEnd/images/theme/upload.svg" id="category_image" alt="upload" width="75" height="75">
+                                <input onchange="viewCategoryImage(event)" type="file" placeholder="Type here" name="categoryImage" class="form-control"
+                                    id="categoryImage" />
+                                <p class="text-danger" id="categoryImageError"></p>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Description</label>
+                                <textarea name="categoryDescription" placeholder="Type here" id="categoryDescription"
+                                    class="form-control"></textarea>
+                                <p class="text-danger" id="categoryDescriptionError"></p>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Discount  (Optional)</label>
+                                <input name="categoryDiscount" placeholder="0%" id="categoryDiscount"
+                                    class="form-control"></input>
+                                <p class="text-danger" id="categoryDiscountError"></p>
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Create category</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="table-responsive">
+                            <% if (categories.length!==0) { %>
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">
+                                                <div class="form-check">
+                                                    <!-- <input class="form-check-input" type="checkbox" value="" /> -->
+                                                </div>
+                                            </th>
+                                            <th>Image</th>
+                                            <th>Name</th>
+                                            <th>Description</th>
+                                            <th>Discount</th>
+                                            <th>List or unlist</th>
+                                            <th class="text-end">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% for(category of categories ) { %>
+                                            <tr>
+                                                <td class="text-center">
+                                                    <div class="form-check">
+                                                        <!-- <input class="form-check-input" type="checkbox" value="" /> -->
+                                                    </div>
+                                                </td>
+                                                <td><img src="/backend/images/category_image/<%= category.categoryImage %>"
+                                                        alt="category" srcset="" width="35" height="35"></td>
+                                                <td><b>
+                                                        <%= category.categoryName %>
+                                                    </b></td>
+                                                <td>
+                                                    <%= category.categoryDescription %>
+                                                </td>
+                                               <td>
+                                                   <%= category.discount%>%
+                                               </td>
+                                                    <td>
+                                                <label class="switch">
+                                                    <input type="checkbox" <%=category.list_or_unlist==true ? 'checked' : '' %> id="togBtn<%= category._id %>"
+                                                        onchange="handleToggle(event, '<%= category._id %>')">
+                                                            <div class="slider round">
+                                                                
+                                                                <span class="on text-start">Listed</span>
+                                                                <span class="off text-end">Unlisted</span>
+                                                            </div>
+                                                </label>
+
+                                                    </td>
+                                                
+                                                       
+                                                            <td class="text-end">
+                                                                <div class="dropdown">
+                                                                    <a class="btn btn-light rounded btn-sm font-sm" href="/admin/category/editCategory?id=<%= category._id %>"><i class="fas fa-edit"></i></a>
+                                                                  
+
+                                                                    </div>
+                                                                </div> 
+                                                            </td>
+                                            </tr>
+                                            <% } %>
+                                    </tbody>
+                                </table>
+                                <%}else{%>
+                                    <h1>No Categories</h1>
+                                    <%}%>
+                        </div>
+                        <script>
+                            function handleToggle(event, id) {
+                                    const toggleButton = event.target // Get the clicked checkbox
+                                    if (toggleButton.checked) {
+                                        listCategory(id)
+                                    } else {
+                                        unlistCategory(id)
+                                    }
+                                }
+
+                                function listCategory(id) {
+                                    fetch(`/admin/category/listCategory?id=${id}`)
+                                        .then((res) => res.json())
+                                        .then((data) => {
+                                            if (data.response === "listed") {
+                                                document.querySelector(
+                                                    `#togBtn${id} + .slider .on`
+                                                ).style.display = "block"
+                                                document.querySelector(
+                                                    `#togBtn${id} + .slider .off`
+                                                ).style.display = "none"
+                                            } else {
+                                                // Handle other responses or errors
+                                                alert("Category listing failed.")
+                                            }
+                                        })
+                                        .catch((error) => {
+                                            // Handle fetch or network errors
+                                            console.log(error)
+                                        })
+                                }
+
+                                function unlistCategory(id) {
+                                    fetch(`/admin/category/unlistCategory?id=${id}`)
+                                        .then((res) => res.json())
+                                        .then((data) => {
+                                            if (data.response === "unlisted") {
+                                                // Handle success
+                                                document.querySelector(
+                                                    `#togBtn${id} + .slider .on`
+                                                ).style.display = "none"
+                                                document.querySelector(
+                                                    `#togBtn${id} + .slider .off`
+                                                ).style.display = "block"
+                                            } else {
+                                                // Handle other responses or errors
+                                                alert("Category listing failed.")
+                                            }
+                                        })
+                                        .catch((error) => {
+                                            // Handle fetch or network errors
+                                            console.log(error)
+                                        })
+                                }
+                        </script>
+                    </div> <!-- .col// -->
+                </div> <!-- .row // -->
+            </div> <!-- card body .// -->
+        </div> <!-- card .// -->
+        <script>
+           
+
+
+  
+     
+             
+                
+
+
+        </script>
+    </section> <!-- content-main end// -->
+
+    <%- include('../partials/admin/footer.ejs') %>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Furnish Nest</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <style>
+        /* Center the form on the screen */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f2f2f2;
+            /* Set a background color */
+        }
+        .card {
+            width: 400px;
+            /* Adjust the width to your preference */
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button[type="submit"] {
+            background-color: #046963;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        button[type="submit"]:hover {
+            background-color: #046963;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+         <div class="card-header">
+            <h5>Add Address</h5>
+        </div> 
+        <div class="card-body">
+            <form action="/addingAddress" method="post" id="addressAddForm">
+                <div class="form-group">
+                    <input type="text" id="firstName" name="firstName" placeholder="First name *">
+                    <p class="text-danger" id="firstNameError"></p>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="lastName" name="lastName" placeholder="Last name *">
+                    <p class="text-danger" id="lastNameError"></p>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="address" id="address" placeholder="Address *">
+                    <p class="text-danger" id="addressError"></p>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="city" name="city" placeholder="City / Town *">
+                    <p class="text-danger" id="cityError"></p>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="state" name="state" placeholder="State / County *">
+                    <p class="text-danger" class="text-danger" id="stateError"></p>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="pincode" name="zipcode" placeholder="Postcode / ZIP *">
+                    <p class="text-danger" id="zipcodeError"></p>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="landMark" name="landMark" placeholder="Land Mark*">
+                    <p class="text-danger" id="landMarkError"></p>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="phone" name="phone" placeholder="Phone *">
+                    <p class="text-danger" id="phoneError"></p>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="email" name="email" placeholder="Email address *">
+                    <p class="text-danger" id="emailError"></p>
+                </div>
+                 <button type="submit">Add Address</button> 
+            </form>
+        </div>
+    </div>
+    <!-- <script src="./frontEnd/javascripts/main.js?v=3.4"></script> -->
+    <script>
+        function formValidate() {
+            var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
+            var firstName = document.getElementById("firstName").value;
+            var lastName = document.getElementById("lastName").value;
+            var address = document.getElementById("address").value;
+            var city = document.getElementById("city").value;
+            var state = document.getElementById("state").value;
+            var pincode = document.getElementById("pincode").value;
+            var landMark = document.getElementById("landMark").value;
+            var phone = document.getElementById("phone").value;
+            var email = document.getElementById("email").value;
+            var firstNameError = document.getElementById("firstNameError");
+            var lastNameError = document.getElementById("lastNameError");
+            var addressError = document.getElementById("addressError");
+            var cityError = document.getElementById("cityError");
+            var stateError = document.getElementById("stateError");
+            var zipcodeError = document.getElementById("zipcodeError");
+            var landMarkError = document.getElementById("landMarkError");
+            var phoneError = document.getElementById("phoneError");
+            var emailError = document.getElementById("emailError");
+            // Reset error messages
+            firstNameError.textContent = "";
+            lastNameError.textContent = "";
+            addressError.textContent = "";
+            cityError.textContent = "";
+            stateError.textContent = "";
+            zipcodeError.textContent = "";
+            landMarkError.textContent = "";
+            phoneError.textContent = "";
+            emailError.textContent = "";
+            var isValid = true;
+            if (firstName.trim() === "") {
+                firstNameError.textContent = "First name is required";
+                isValid = false;
+            } else if (/\d/.test(firstName)) {
+                firstNameError.textContent = "First name should Character ";
+                isValid = false;
+            } else if (firstName.length < 3) {
+                firstNameError.textContent = "Enter a valid name";
+                isValid = false;
+            }
+            if (lastName.trim() === "") {
+                lastNameError.textContent = "Last name is required";
+                isValid = false;
+            } else if (/\d/.test(lastName)) {
+                lastNameError.textContent = "Last name should Character ";
+                isValid = false;
+            }
+            if (address.trim() === "") {
+                addressError.textContent = "Address is required";
+                isValid = false;
+            }
+            if (city.trim() === "") {
+                cityError.textContent = "City / Town is required";
+                isValid = false;
+            } else if (/\d/.test(city)) {
+                cityError.textContent = "Only character is allowed";
+                isValid = false;
+            }
+            if (state.trim() === "") {
+                stateError.textContent = "State / County is required";
+                isValid = false;
+            } else if (/\d/.test(state)) {
+                stateError.textContent = "Only character is allowed";
+                isValid = false;
+            }
+            if (pincode.trim() === "") {
+                zipcodeError.textContent = "Postcode / ZIP is required";
+                isValid = false;
+            } else if (!/^\d+$/.test(pincode)) {
+                zipcodeError.textContent = "Only digits are  allowed";
+                isValid = false;
+            }
+            if (landMark.trim() === "") {
+                landMarkError.textContent = "Land Mark is required";
+                isValid = false;
+            } else if (/\d/.test(landMark)) {
+                landMarkError.textContent = "Only character is allowed";
+                isValid = false;
+            }
+            if (phone.trim() === "") {
+                phoneError.textContent = "Phone is required";
+                isValid = false;
+            } else if (!/^\d+$/.test(phone)) {
+                phoneError.textContent = "Only digits are allowed";
+                isValid = false;
+            } else if (!/^[789]/.test(phone)) {
+                phoneError.textContent = "Invalid number";
+                isValid = false;
+            }
+            if (email.trim() === "") {
+                emailError.textContent = "Email address is required";
+                isValid = false;
+            } else if (!emailPattern.test(email)) {
+                emailError.textContent = "Invalid Email";
+                isValid = false;
+            }
+            return isValid;
+        }
+        $(document).ready(function () {
+            // Handle form submission
+            $('#addressAddForm').submit(function (event) {
+                event.preventDefault();
+                // Call the form validations function
+                const isFormValid = formValidate();
+                // Call the AJAX request if form validation passes
+                if (isFormValid) {
+                    const formData = $(this).serialize();
+                    // Send a POST request via AJAX to the server
+                    $.ajax({
+                        type: 'POST',
+                        url: '/order/addingAddress', // Route on the server to handle password change
+                        data: formData,
+                        success: function (response) {
+                            if (response.response === 'ok') {
+                                // Display a SweetAlert for incorrect old password
+                                window.location.href = "/cart/checkOut"
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Password Changed',
+                                    text: 'successfully',
+                                });
+                                // Password changed successfully, you can handle this case
+                                // e.g., redirect to a success page or show a success message
+                            }
+                        },
+                        error: function (error) {
+                            // Handle other errors, if any
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

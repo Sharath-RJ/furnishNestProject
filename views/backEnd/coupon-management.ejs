@@ -1,0 +1,118 @@
+<%- include('../partials/admin/header.ejs') %>
+    <section class="content-main">
+        <div class="content-header" >
+            <div>
+                <h2 class="content-title card-title">Coupons </h2>
+               
+            </div>
+            <div>
+                <input type="text" placeholder="Search Categories" class="form-control bg-white">
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <form action="" method="post" id="addCouponForm">
+                          <div class="mb-2">
+                                <label for="" class="form-label">Code</label>
+                                <input type="text" oninput="convertUpperCase(this)" placeholder="Type here" name="couponCode" class="form-control"
+                                    id="couponCode" />
+                                <p class="text-danger" id="couponCodeError"></p>
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label">Description</label>
+                                <textarea name="couponDescription" placeholder="Type here" id="couponDescription"
+                                    class="form-control"></textarea>
+                                <p class="text-danger" id="couponDescriptionError"></p>
+                            </div>
+                            <div class="mb-2">
+                                <label for="" class="form-label">Min Purchase</label>
+                                <input type="text" placeholder="Type here" name="minPurchase" class="form-control" id="minPurchase" />
+                                <p class="text-danger" id="minPurchaseError"></p>
+                            </div>
+                            <div class="mb-2">
+                                <label for="" class="form-label">Expiry</label>
+                                <input type="date" placeholder="Type here" name="couponExpiry" class="form-control" id="couponExpiry" />
+                                <p class="text-danger" id="couponExpiryError"></p>
+                            </div>
+                            <div class="mb-2">
+                                <label for="" class="form-label">Discount</label>
+                                <input type="text" placeholder="Type here" name="couponDiscount" class="form-control" id="couponDiscount" />
+                                <p class="text-danger" id="couponDiscountError"></p>
+                            </div>
+                            <div class="mb-2">
+                                <label for="" class="form-label">Max Amount</label>
+                                <input type="text" placeholder="Type here" name="maxAmount" class="form-control" id="maxAmount" />
+                                <p class="text-danger" id="maxAmountError"></p>
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Add Coupon</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="table-responsive">
+                           
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                              Code  
+                                            </th>
+                                            <th>Min Purchase</th>
+                                            <th>Discount</th>
+                                            <th>Expiry</th>
+                                            <th>Description</th>
+                                            <th>Max Amount</th>
+                                            <th class="text-end">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                           <% for(coupon of coupons) { %>
+                                                <tr id="coupon_<%=coupon._id%>">
+                                                    <td class="text-center">
+                                                       <%= coupon.code %>
+                                                    </td>
+                                                    <td><%= coupon.minPurchase %></td>
+                                                    <td><%= coupon.discount %></td>
+                                                    <td><%= coupon.expiry %></td>
+                                                
+                                                    <td><%= coupon.description %></td>
+                                                
+                                                    <td><%= coupon.maxAmount %></td>
+                                                
+                                                    <td class="text-end">
+                                                        <div class="dropdown">
+                                                            <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i
+                                                                    class="material-icons ">more_vert</i> </a>
+                                                            <div class="dropdown-menu">
+                                                                <!-- <a class="dropdown-item" href="#">View detail</a> -->
+                                                                <a class="dropdown-item" href="/admin/coupon/editCoupon?id=<%= coupon._id %>">Edit</a>
+                                                                <a class="dropdown-item text-danger" href="/admin/coupon/deleteCoupon?id=<%= coupon._id %>"
+                                                                >Delete</a>
+                                                            </div>
+                                                        </div> <!-- dropdown //end -->
+                                                    </td> 
+                                                </tr>
+                                           <% } %>
+                                        
+                                  
+                                    </tbody>
+                                </table>
+                    
+                                    
+                               
+                        </div>
+                        <script>
+                        </script>
+                    </div> <!-- .col// -->
+                </div> <!-- .row // -->
+            </div> <!-- card body .// -->
+        </div> <!-- card .// -->
+    </section> <!-- content-main end// -->
+    <script>
+   
+        
+    </script>
+    <%- include('../partials/admin/footer.ejs') %>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Furnish Nest</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="frontEnd/stylesheets/main.css?v=3.4">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">Personal Information</h5>
+        </div>
+        <div class="card-body">
+            <form action="" method="post" id="userDetailsFormEdit">
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h6 class="mb-0">First Name</h6>
+                    </div>
+                    <div class="col-sm-3 text-secondary">
+                        <input type="text" id="f-name" name="firstName" value="<%= userDetails.firstName %>">
+                        <p class="text-danger" class="text-danger" id="firstNameError"></p>
+                    </div>
+                    <div class="col-sm-3">
+                        <h6 class="mb-0">Second Name</h6>
+                    </div>
+                    <div class="col-sm-3 text-secondary">
+                        <input type="text" id="l-name" name="lastName" value="<%= userDetails.lastName %>">
+                        <p class="text-danger" class="text-danger" id="lastNameError"></p>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h6 class="mb-0">Email</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        <input type="text" id="email" name="email" value="<%= userDetails.email %>">
+                        <p class="text-danger" class="text-danger" id="emailError"></p>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h6 class="mb-0">Phone</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        <input type="text" id="phone" onkeyup="phoneVal()" name="phone"
+                            value="<%= userDetails.phone %>">
+                        <p class="text-danger" id="phoneError"></p>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <button type="submit" class="btn btn-fill-out submit">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        alert("hrllo")
+        function phoneVal() {
+            numPattern = /^[789]/
+            var phone = document.getElementById("phone").value
+            var phoneError = document.getElementById("phoneError")
+            if (!numPattern.test(phone)) {
+                phoneError.innerHTML = "Invalid Number"
+                if (phone.length == 0) phoneError.innerHTML = ""
+                return false
+            }
+            if (isNaN(phone)) {
+                phoneError.innerHTML = "Character is not allowed in this field"
+                if (phone.length == 0) phoneError.innerHTML = ""
+                return false
+            }
+            if (phone.length != 10) {
+                phoneError.innerHTML = "Must be 10 digits long"
+                if (phone.length == 0) phoneError.innerHTML = ""
+                return false
+            } else {
+                phoneError.innerHTML = ""
+                return true
+            }
+        }
+    </script>
+    <script src="/frontEnd/javascripts/main.js?v=3.4"></script>
+</body>
+</html>

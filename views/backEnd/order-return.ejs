@@ -1,0 +1,92 @@
+<%- include('../partials/admin/header.ejs') %>
+    <section class="content-main">
+        <div class="content-header">
+            <div>
+                <h2 class="content-title card-title">Order Return List </h2>
+            </div>
+            <div>
+                <input type="text" placeholder="Search order ID" class="form-control bg-white">
+            </div>
+        </div>
+        <div class="card mb-4">
+            <header class="card-header">
+                <div class="row gx-3">
+                    <div class="col-lg-4 col-md-6 me-auto">
+                        <input type="text" placeholder="Search..." class="form-control">
+                    </div>
+                    <div class="col-lg-2 col-6 col-md-3">
+                        <select class="form-select">
+                            <option>Status</option>
+                            <option>Active</option>
+                            <option>Disabled</option>
+                            <option>Show all</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-2 col-6 col-md-3">
+                        <select class="form-select">
+                            <option>Show 20</option>
+                            <option>Show 30</option>
+                            <option>Show 40</option>
+                        </select>
+                    </div>
+                </div>
+            </header> <!-- card-header end// -->
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>#ID</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Total</th>
+                                <th scope="col">Date</th>
+                                <th scope="col" class="text-end"> Action </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% orderReturn.forEach((order,i)=> { %>
+                                <tr>
+                                    <td>
+                                        <%=order.orderId._id %>
+                                    </td>
+                                    <td><b>
+                                            <%=order.userId.firstName %>
+                                        </b></td>
+                                    <td>₹ <%=order.orderId.total%>
+                                    </td>
+                                    <td>
+                                        <%= order.createdAt.toLocaleString('en-US', { month: 'numeric' , day: 'numeric'
+                                            , year: 'numeric' , hour: '2-digit' , minute: '2-digit' , second: '2-digit'
+                                            , hour12: true }) %>
+                                    </td>
+                                    
+                                             <td class="text-end">
+                                                <button class="btn bg-primary-light"><a href="/admin/return/returnDetails?id=<%=order._id%>">View Details</a></button>
+                                               
+                                            </td> 
+                                </tr>
+                                <%}) %>
+                                    <script>
+                                  
+                                    </script> 
+                        </tbody>
+                    </table>
+                </div> <!-- table-responsive end -->
+            </div> <!-- card-body end -->
+        </div> <!-- card end -->
+        <div class="pagination-area mt-15 mb-50">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-start">
+                    <% for( let index=1; index < count; index++ ) { %>
+                        <li class="page-item"><a class="page-link" href="/admin/returns?page=<%=index %>">
+                                <%=index%>
+                            </a></li>
+                        <% } %>
+                </ul>
+            </nav>
+        </div>
+    </section> <!-- content-main end// -->
+    <script>
+        
+    </script> 
+    <%- include('../partials/admin/footer.ejs') %>

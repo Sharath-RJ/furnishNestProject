@@ -1,0 +1,411 @@
+<%- include('../partials/customer/header') %>
+    <%- include('../partials/customer/mobile-header') %>
+
+        <body id="body">
+
+        </body>
+        <main class="main">
+            <div class="page-header breadcrumb-wrap">
+                <div class="container">
+                    <!-- <div class="breadcrumb">
+                        <a href="index.html" rel="nofollow">Home</a>
+                        <span></span> Shop
+                    </div> -->
+                </div>
+            </div>
+            <section class="mt-50 mb-50">
+                <div class="container">
+                    <div class="row flex-row-reverse">
+                        <div class="col-lg-12">
+                            <div class="shop-product-fillter">
+                                <div class="totall-product">
+                                    <p> We found <strong class="text-brand" id="productCount">
+                                            <%= products.length %>
+                                        </strong> items for you!</p>
+                                </div>
+                                <div class="sort-by-product-area">
+                                    <div class="sort-by-cover mr-10">
+                                        <div class="sort-by-product-wrap">
+                                            <div class="sort-by">
+                                                <span><i class="fi-rs-apps"></i>Show:</span>
+                                            </div>
+                                            <div class="sort-by-dropdown-wrap">
+                                                <span> 50 <i class="fi-rs-angle-small-down"></i></span>
+                                            </div>
+                                        </div>
+                                        <div class="sort-by-dropdown">
+                                            <ul>
+                                                <li><a class="active" href="#">50</a></li>
+                                                <li><a href="#">100</a></li>
+                                                <li><a href="#">150</a></li>
+                                                <li><a href="#">200</a></li>
+                                                <li><a href="#">All</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="sort-by-cover">
+                                        <div class="sort-by-product-wrap">
+                                            <div class="sort-by">
+                                                <span><i class="fi-rs-apps-sort"></i>Sort by:</span>
+                                            </div>
+                                            <div class="sort-by-dropdown-wrap">
+                                                <span> Featured <i class="fi-rs-angle-small-down"></i></span>
+                                            </div>
+                                        </div>
+                                        <div class="sort-by-dropdown">
+                                            <ul>
+                                                <li><a class="active" href="#">Featured</a></li>
+                                                <li><a href="#">Price: Low to High</a></li>
+                                                <li><a href="#">Price: High to Low</a></li>
+                                                <li><a href="#">Release Date</a></li>
+                                                <li><a href="#">Avg. Rating</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="sort-by-cover">
+                                        <div class="sort-by-product-wrap">
+                                            <div class="sort-by">
+                                                <span><i class="fi-rs-apps-sort"></i>Filter By</span>
+                                            </div>
+                                            <div class="sort-by-dropdown-wrap">
+                                                <span> Price <i class="fi-rs-angle-small-down"></i></span>
+                                            </div>
+                                        </div>
+                                        <div class="sort-by-dropdown">
+                                            <!-- Add this form to your front-end HTML file -->
+                                            <form id="filterForm">
+                                                <label for="minPrice">Min Price:</label>
+                                                <input type="number" name="minPrice" id="minPrice">
+
+                                                <label for="maxPrice">Max Price:</label>
+                                                <input type="number" name="maxPrice" id="maxPrice">
+
+                                                <!-- Add other filter criteria as needed -->
+
+                                                <button type="submit">Apply Filters</button>
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row product-grid-3" id="productContainer">
+                                <% for( product of products ) { %>
+                                    <div class="col-lg-3 col-md-3 col-12 col-sm-6">
+                                        <div class="product-cart-wrap mb-30">
+                                            <div class="product-img-action-wrap">
+                                                <div class="product-img product-img-zoom">
+                                                    <a href="/productDetails?id=<%= product._id %>">
+                                                        <img class="default-img"
+                                                            src="/backEnd/images/cropped_image/<%= product.productImage[0] %>"
+                                                            alt="">
+                                                        <img class="hover-img"
+                                                            src="/backEnd/images/cropped_image/<%= product.productImage[1] %>"
+                                                            alt="">
+                                                    </a>
+                                                </div>
+                                                <div class="product-action-1">
+
+
+                                                </div>
+                                                <div class="product-badges product-badges-position product-badges-mrg">
+
+                                                </div>
+                                            </div>
+                                            <div class="product-content-wrap">
+                                                <div class="product-category">
+                                                    <a href="#">
+                                                        <%= product.productCategory %>
+                                                    </a>
+                                                </div>
+                                                <h2><a href="shop-product-right.html">
+                                                        <%= product.productName.slice(0, 55) +
+                                                            (product.productName.length> 55 ? '...' : '') %>
+                                                    </a></h2>
+                                                <div class="rating-result" title="90%">
+                                                    <span>
+                                                        <span style="color: red;"><%=product.productDiscount%> % Off</span>
+                                                    </span>
+                                                </div>
+                                                <div class="product-price">
+                                                    <span>₹ <%= product.sellingPrice %> </span>
+                                                    <span class="old-price">₹ <%= product.regularPrice%></span>
+                                                </div>
+                                                <div class="product-action-1 show">
+                                                    <a aria-label="<%= product.isInWishList? 'Added to WishList': 'Add to WishList'%>"
+                                                        id="action-btn_<%=product._id%>"
+                                                        class="action-btn hover-up <%= product.isInWishList? 'changeColorRed': 'changeColor'%>"
+                                                        onclick="addToWishList('<%= product._id %>')">
+                                                        <i id="heart_<%= product._id %>" class="fas fa-heart"></i>
+                                                    </a>
+
+                                                    <a aria-label="Add To Cart" class="action-btn hover-up"
+                                                        onclick="updateCartCount('<%=product._id%>')"><i
+                                                            class="fas fa-shopping-cart"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% } %>
+                            </div>
+                            <!--pagination-->
+                            <div class="pagination-area mt-15 mb-sm-5 mb-lg-0">
+                                <nav aria-label="Page navigation example">
+                                    <ul class="pagination justify-content-start" id="pagination">
+                                        <% for( let index=1; index <=count; index++ ) { %>
+                                            <li class="page-item <%= page == index? 'active' : ' '%>"><a
+                                                    class="page-link"
+                                                    href="/AllProduct_Category?page=<%=index%>&name=<%=cat%>">
+                                                    <%= index %>
+                                                </a></li>
+                                            <% } %>
+                                    </ul>
+                                </nav>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+            <script>
+               async function updateCartCount(id) {
+                    try {
+                        const response = await fetch(`/addToCart?id=${id}`);
+                        const data = await response.json();
+
+                        console.log(data);
+
+                        if (data.message === "Out of Stock") {
+                            alert("Out of stock");
+                        } else {
+                            document.getElementById(`cart_${id}`).setAttribute("aria-label", "Added to cart");
+                            document.getElementById("cart-count").innerHTML = data.length;
+                        }
+                    } catch (error) {
+                        console.error(error.message);
+                    }
+                }
+
+
+                function addToWishList(id) {
+
+                    $.ajax({
+                        type: 'GET',
+                        url: `/addToWishList?id=${id}`, // Route on the server to handle adding to the wishlist
+                        success: function (response) {
+                            if (response.response === 'Added') {
+                                // Heart color to red
+                                document.getElementById(`heart_${id}`).style.color = 'red';
+
+                                document.getElementById('wish_list_count').innerHTML = response.count + 1
+                                console.log(response.count)
+                                // Hover effect
+                                document.getElementById(`action-btn_${id}`).addEventListener("mouseover", () => {
+                                    document.getElementById(`heart_${id}`).style.color = "red";
+
+                                });
+
+                                // Update ARIA label and button class
+                                document.getElementById(`action-btn_${id}`).classList.remove('changeColor');
+                                document.getElementById(`action-btn_${id}`).setAttribute("aria-label", "Added to WishList");
+                                document.getElementById(`action-btn_${id}`).classList.add('changeColorRed');
+                            } else if (response.response === "alreadyAdded") {
+                                // Handle removal from wishlist here (similar logic as in your code)
+                                fetch(`/removeWishList?id=${id}`)
+                                    .then((res) => res.json())
+                                    .then((data) => {
+                                        if (data.response === "removed") {
+                                            // Heart color to default dark green
+                                            document.getElementById(`heart_${id}`).style.color = '#088178';
+
+                                            // Hover effect for default state
+                                            document.getElementById(`action-btn_${id}`).addEventListener("mouseover", () => {
+                                                document.getElementById(`heart_${id}`).style.color = "white";
+
+                                            });
+                                            document.getElementById('wish_list_count').innerHTML = data.count - 1
+                                            // Update ARIA label and button class
+                                            document.getElementById(`action-btn_${id}`).classList.remove('changeColorRed');
+                                            document.getElementById(`action-btn_${id}`).classList.add('changeColor');
+                                            document.getElementById(`action-btn_${id}`).setAttribute("aria-label", "Add to wishList");
+                                        }
+                                    });
+                            }
+                        },
+                        error: function (error) {
+                            // Handle other errors, if any
+                        }
+                    });
+
+
+                }
+            </script>
+            <script>
+                // Add this JavaScript code to your front-end file
+                document.getElementById('filterForm').addEventListener('submit', async function (event) {
+                    event.preventDefault();
+
+                    const minPrice = document.getElementById('minPrice').value;
+                    const maxPrice = document.getElementById('maxPrice').value;
+                    // Get other filter criteria as needed
+
+                    // Make an AJAX request to the server
+
+
+                    // Assuming the server responds with JSON
+                    $.ajax({
+                        type: 'GET',
+                        url: `/AllProduct_Category?minPrice=${minPrice}&maxPrice=${maxPrice}&ajax=true`,// Route on the server to handle password change
+                        success: function (response) {
+                        var pagination=document.getElementById('pagination')
+                         pagination.innerHTML=''
+                       for (let index = 1; index <= response.count; index++) {
+                                let pageItemClass = response.page == index ? 'active' : '';
+
+                                // Concatenate the HTML string properly
+                                pagination.innerHTML += `
+                    <li class="page-item ${pageItemClass}">
+                    <a class="page-link" href="#"  onclick="navigatePage(${index}, '${response.cat}', ${minPrice}, ${maxPrice}, ${this})">
+                        ${index}
+                    </a>
+                </li>`;
+                            }
+
+                            document.getElementById('productCount').innerHTML=response.productCount
+                            var productContainer = document.getElementById('productContainer');
+
+                            // Clear existing content in the container
+                            productContainer.innerHTML = '';
+
+                            let text = ''
+                            let productHTML = response.products.map((product) => {
+
+                                text += `<div class="col-lg-3 col-md-3 col-12 col-sm-6">
+            <div class="product-cart-wrap mb-30">
+                <div class="product-img-action-wrap">
+                    <div class="product-img product-img-zoom">
+                        <a href="/productDetails?id=${product._id}">
+                            <img class="default-img" src="/backEnd/images/cropped_image/${product.productImage[0]}" alt="">
+                            <img class="hover-img" src="/backEnd/images/cropped_image/${product.productImage[1]}" alt="">
+                        </a>
+                    </div>
+                    <div class="product-action-1">
+        
+        
+                    </div>
+                    <div class="product-badges product-badges-position product-badges-mrg">
+        
+                    </div>
+                </div>
+                <div class="product-content-wrap">
+                    <div class="product-category">
+                        <a href="#">
+                            ${product.productCategory}
+                        </a>
+                    </div>
+                    <h2><a href="shop-product-right.html">
+                            ${product.productName.slice(0, 55) +
+                                    (product.productName.length > 55 ? '...' : '')}
+        
+                        </a></h2>
+                    <div class="rating-result" title="90%">
+                        <span>
+                            <span>90%</span>
+                        </span>
+                    </div>
+                    <div class="product-price">
+                        <span>₹ ${product.sellingPrice} </span>
+                        <span class="old-price">₹ ${product.regularPrice}</span>
+                    </div>
+                    <div class="product-action-1 show">
+                        <a aria-label="${product.isInWishList ? 'Added to WishList' : 'Add to WishList'}"
+                            id="action-btn_${product._id}"
+                            class="action-btn hover-up ${product.isInWishList ? 'changeColorRed' : 'changeColor'}"
+                            onclick="addToWishList(${product._id})">
+                            <i id="heart_${product._id}" class="fas fa-heart"></i>
+                        </a>
+        
+                        <a aria-label="Add To Cart" class="action-btn hover-up" onclick="updateCartCount(${product._id})"><i
+                                class="fas fa-shopping-cart"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>`
+                            }); productContainer.innerHTML = text
+
+                        },
+                        error: function (error) {
+                            // Handle other errors, if any
+                        }
+                    });
+
+                });
+    function navigatePage(index, cat, minPrice, maxPrice, link) {
+            const newUrl = `/product/AllProduct_Category?page=${index}&name=${cat}&maxPrice=${maxPrice}&minPrice=${minPrice}`;
+            window.location.href = newUrl;     
+    }
+           
+            </script>
+        </main>
+        <%- include('../partials/customer/footer') %>
+            <!-- 
+
+        `<div class="col-lg-3 col-md-3 col-12 col-sm-6">
+            <div class="product-cart-wrap mb-30">
+                <div class="product-img-action-wrap">
+                    <div class="product-img product-img-zoom">
+                        <a href="/productDetails?id=${product._id}">
+                            <img class="default-img" src="/backEnd/images/cropped_image/${product.productImage[0]}" alt="">
+                            <img class="hover-img" src="/backEnd/images/cropped_image/${product.productImage[1]}" alt="">
+                        </a>
+                    </div>
+                    <div class="product-action-1">
+        
+        
+                    </div>
+                    <div class="product-badges product-badges-position product-badges-mrg">
+        
+                    </div>
+                </div>
+                <div class="product-content-wrap">
+                    <div class="product-category">
+                        <a href="#">
+                            ${product.productCategory}
+                        </a>
+                    </div>
+                    <h2><a href="shop-product-right.html">
+                            ${product.productName.slice(0, 55) +
+                            (product.productName.length > 55 ? '...' : '')}
+        
+                        </a></h2>
+                    <div class="rating-result" title="90%">
+                        <span>
+                            <span>90%</span>
+                        </span>
+                    </div>
+                    <div class="product-price">
+                        <span>₹ ${product.sellingPrice} </span>
+                        <span class="old-price">₹ ${product.regularPrice}</span>
+                    </div>
+                    <div class="product-action-1 show">
+                        <a aria-label="${product.isInWishList ? 'Added to WishList' : 'Add to WishList'}"
+                            id="action-btn_${product._id}"
+                            class="action-btn hover-up ${product.isInWishList ? 'changeColorRed' : 'changeColor'}"
+                            onclick="addToWishList(${product._id})">
+                            <i id="heart_${product._id}" class="fas fa-heart"></i>
+                        </a>
+        
+                        <a aria-label="Add To Cart" class="action-btn hover-up" onclick="updateCartCount(${product._id})"><i
+                                class="fas fa-shopping-cart"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>` -->
+
+            

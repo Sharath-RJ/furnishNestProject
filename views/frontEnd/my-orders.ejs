@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Furnish Nest</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg">
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="/frontEnd/stylesheets/main.css?v=3.4">
+</head>
+<body>
+    <main class="main">
+        <div class="page-header breadcrumb-wrap">
+            <div class="container">
+                <h1>MY Orders</h1>
+            </div>
+        </div>
+        <section class="mt-50 mb-50">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="table-responsive">
+                            <table class="table shopping-summery text-center clean">
+                                <thead>
+                                    <tr class="main-heading">
+                                        <th scope="col">Image</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Quantity</th>
+                                        <th scope="col">Price</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% for( let i=0; i < myOrders.length; i++ ) { %>
+                                        <% myOrders[i].products.forEach(element=> { %>
+                                            <tr>
+                                                <td class="image product-thumbnail"><img
+                                                        src="/backEnd/images/product_image/<%=element.image[0] %>"
+                                                        alt="#">
+                                                </td>
+                                                <td class="product-des product-name">
+                                                    <h5 class="product-name"><a href="#">
+                                                            <%=element.name%>
+                                                                <%=element.name%>
+                                                        </a></h5>
+                                                </td>
+                                                <td class="text-center" data-title="Stock">
+                                                    <div class="detail-qty border radius  m-auto">
+                                                        <span class="qty-val">
+                                                            <%=element.quantity%>
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                                <td class="price" data-title="Price"><span>
+                                                        <%=myOrders[i].total%>
+                                                    </span></td>
+                                                <td class="price" data-title="Price"><span>
+                                                        <%= myOrders[i].status %>
+                                                    </span></td>
+                                                <td class="action" data-title="Remove"><a
+                                                        href="/order/cancelOrder?id=<%= element.id %>"
+                                                        class="text-muted">cancel</a></td>
+                                            </tr>
+                                            <% }) %>
+                                                <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="divider center_icon mt-50 mb-50"><i class="fi-rs-fingerprint"></i></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- Preloader Start -->
+    <!-- <div id="preloader-active">
+        <div class="preloader d-flex align-items-center justify-content-center">
+            <div class="preloader-inner position-relative">
+                <div class="text-center">
+                    <h5 class="mb-5">Now Loading</h5>
+                    <div class="loader">
+                        <div class="bar bar1"></div>
+                        <div class="bar bar2"></div>
+                        <div class="bar bar3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <!-- Vendor JS-->
+    <script src="/frontEnd/javascripts/vendor/modernizr-3.6.0.min.js"></script>
+    <script src="/frontEnd/javascripts/vendor/jquery-3.6.0.min.js"></script>
+    <script src="/frontEnd/javascripts/vendor/jquery-migrate-3.3.0.min.js"></script>
+    <script src="/frontEnd/javascripts/vendor/bootstrap.bundle.min.js"></script>
+    <script src="/frontEnd/javascripts/plugins/slick.js"></script>
+    <script src="/frontEnd/javascripts/plugins/jquery.syotimer.min.js"></script>
+    <script src="/frontEnd/javascripts/plugins/wow.js"></script>
+    <script src="/frontEnd/javascripts/plugins/jquery-ui.js"></script>
+    <script src="/frontEnd/javascripts/plugins/perfect-scrollbar.js"></script>
+    <script src="/frontEnd/javascripts/plugins/magnific-popup.js"></script>
+    <script src="/frontEnd/javascripts/plugins/select2.min.js"></script>
+    <script src="/frontEnd/javascripts/plugins/waypoints.js"></script>
+    <script src="/frontEnd/javascripts/plugins/counterup.js"></script>
+    <script src="/frontEnd/javascripts/plugins/jquery.countdown.min.js"></script>
+    <script src="/frontEnd/javascripts/plugins/images-loaded.js"></script>
+    <script src="/frontEnd/javascripts/plugins/isotope.js"></script>
+    <script src="/frontEnd/javascripts/plugins/scrollup.js"></script>
+    <script src="/frontEnd/javascripts/plugins/jquery.vticker-min.js"></script>
+    <!-- Template  JS -->
+    <script src=".//frontEnd/javascripts/main.js?v=3.4"></script>
+    <script src=".//frontEnd/javascripts/shop.js?v=3.4"></script>
+</body>
+</html>

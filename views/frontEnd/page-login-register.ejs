@@ -1,0 +1,398 @@
+﻿<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Furnish Nest</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/frontEnd/images/banner/logo.png">
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="/frontEnd/stylesheets/main.css?v=3.4">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+    
+</head>
+<body>
+    <main class="main">
+        <section class="pt-150 pb-150">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-10 m-auto">
+                        <div class="row">
+                            <div class="col-lg-5">
+                                <div
+                                    class="login_wrap widget-taber-content p-30 background-white border-radius-10 mb-md-5 mb-lg-0 mb-sm-5">
+                                    <div class="padding_eight_all bg-white" id="login-container">
+                                        <div class="heading_s1">
+                                            <h3 class="mb-30">Login</h3>
+                                        </div>
+                                        <form method="post" action="/login" id="loginForm">
+                                            <% if (locals.message) { %>
+                                                <p class="text-danger">
+                                                    <%= message %>
+                                                </p>
+                                                <% } %>
+                                                    <% if (locals.success) { %>
+                                                        <p class="text-success">
+                                                            <%= success %>
+                                                        </p>
+                                                        <% } %>
+                                                            <div class="form-group">
+                                                                <input type="text" id="email" name="email"
+                                                                    placeholder="Your Email">
+                                                                <p class="text-danger" id="emailError"></p>
+                                                            </div>
+                                                            <p class="text-danger" id="error-email"></p>
+                                                            <div class="form-group">
+                                                                <input type="password" id="password" name="password"
+                                                                    placeholder="Password">
+                                                                <p class="text-danger" id="passwordError"></p>
+                                                            </div>
+                                                            <p class="text-danger" id="error-password"></p>
+                                                            <div class="login_footer form-group">
+                                                                <div class="chek-form">
+                                                                    <div class="custome-checkbox">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                            name="checkbox" id="exampleCheckbox1"
+                                                                            value="">
+                                                                        <!-- <label class="form-check-label"
+                                                                            for="exampleCheckbox1"><span>Remember
+                                                                                me</span></label> -->
+                                                                    </div>
+                                                                </div>
+                                                                <a class="text-muted" onclick="forgotPassword()">Forgot
+                                                                    password?</a>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <button type="submit"
+                                                                    class="btn btn-fill-out btn-block hover-up">Log
+                                                                    in</button>
+                                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-1"></div>
+                            <div class="col-lg-6">
+                                <div class="login_wrap widget-taber-content p-30 background-white border-radius-5">
+                                    <div class="padding_eight_all bg-white">
+                                        <div class="heading_s1">
+                                            <h3 class="mb-30">Create an Account</h3>
+                                        </div>
+                                        <p class="mb-50 font-sm">
+                                        </p>
+                                        <form method="post" action="/signup" id="signupForm" name="Signup_Form">
+                                            <div class="form-group d-flex g-3">
+                                                <input type="text" id="firstName" onkeyup="nameVal()" name="firstName"
+                                                    placeholder="First Name">
+                                                <input type="text" id="lastName" name="lastName"
+                                                    placeholder="Last Name">
+                                            </div>
+                                            <div class="d-flex justify-content-around">
+                                                <p class="text-danger" id="firstNameError"></p>
+                                                <p class="text-danger" id="lastNameError"></p>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" id="emailSignup" name="email" placeholder="Email">
+                                                <p class="text-danger" id="email-Error"></p>
+                                            </div>
+                                            <div class="form-group">
+                                                <input id="phone" onkeyup="phoneVal()" type="text" name="phone"
+                                                    placeholder="phone">
+                                                <p class="text-danger" id="phoneError"></p>
+                                            </div>
+                                            <div class="form-group">
+                                                <input id="passwordSignup" type="password" name="password"
+                                                    placeholder="Password">
+                                                <p class="text-danger" id="password-Error1"></p>
+                                                <p class="text-danger" id="password-Error2"></p>
+                                                <p class="text-danger" id="password-Error3"></p>
+                                                <p class="text-danger" id="password-Error4"></p>
+                                                <p class="text-danger" id="password-Error5"></p>
+                                                <p class="text-danger" id="password-Error6"></p>
+                                            </div>
+                                            <div class="form-group">
+                                                <input id="confirmPassword" onkeyup="confirmPasswordVal()"
+                                                    type="password" name="confirmpassword"
+                                                    placeholder="Confirm Password">
+                                                <p class="text-danger" id="confirmPasswordError"></p>
+                                            </div>
+                                            <div class="form-group">
+                                                <input id="referalCode" 
+                                                    type="text" name="referalCode"
+                                                    placeholder="referalCode (optional)">
+                                                <p class="text-danger" id="referalCodeError"></p>
+                                            </div>
+                                            <div class="login_footer form-group">
+                                                <div class="chek-form">
+                                                    <div class="custome-checkbox">
+                                                        <!-- <input class="form-check-input" type="checkbox" name="checkbox"
+                                                            id="exampleCheckbox12" value="">
+                                                        <label class="form-check-label" for="exampleCheckbox12"><span>I
+                                                                agree to terms &amp; Policy.</span></label> -->
+                                                    </div>
+                                                </div>
+                                                <!-- <a href="page-privacy-policy.html"><i
+                                                        class="fi-rs-book-alt mr-5 text-muted"></i>Lean more</a> -->
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="submit"
+                                                    class="btn btn-fill-out btn-block hover-up">Register</button>
+                                            </div>
+                                        </form>
+                                        <div class="divider-text-center mt-15 mb-15">
+                                            <span> or</span>
+                                        </div>
+                                        <ul class="btn-login list_none text-center mb-15">
+                                            <li><a href="#" class="btn btn-facebook hover-up mb-lg-0 mb-sm-4">Login With
+                                                    Facebook</a></li>
+                                             
+                                            <li><a href="/auth/google" class="btn btn-google hover-up">Login With Google</a></li>
+                                        </ul>
+                                        <div class="text-muted text-center">Already have an account? <a href="#">Sign in
+                                                now</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- Preloader Start -->
+    <div id="preloader-active">
+        <div class="preloader d-flex align-items-center justify-content-center">
+            <div class="preloader-inner position-relative">
+                <div class="text-center">
+                    <img src="/frontEnd/images/banner/logo.png" width="300" height="100" alt="Furnish Nest">
+                    <div class="loader">
+                        <div class="bar bar1"></div>
+                        <div class="bar bar2"></div>
+                        <div class="bar bar3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#loginForm').submit(function (event) {
+                event.preventDefault(); // Prevent the default form submission
+                // Get the values from the form
+                var email = $('#email').val();
+                var password = $('#password').val();
+                // Regular expressions for email and password validation
+                var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+                // Error messages
+                var emailError = '';
+                var passwordError = '';
+                // Validate email
+                if (!emailPattern.test(email)) {
+                    emailError = 'Enter a valid email address';
+                }
+                //Validate password
+                if (password.length <= 8) {
+                    passwordError = 'Password must contain at least 8 characters,';
+                }
+                // Display error messages or submit the form
+                if (emailError || passwordError) {
+                    $('#emailError').text(emailError);
+                    $('#passwordError').text(passwordError);
+                } else {
+                    // Form is valid, you can submit it here or redirect to another page
+                    $('#emailError').text('');
+                    $('#passwordError').text('');
+                    // Uncomment the following line to submit the form
+                    $('#loginForm').unbind('submit').submit();
+                }
+            });
+            $('#signupForm').submit(function (event) {
+                event.preventDefault(); // Prevent the default form submission
+                // Get the values from the form
+                var email = $('#emailSignup').val();
+                var password = $('#passwordSignup').val();
+                var firstName = $('#firstName').val();
+                var lastName = $('#lastName').val();
+                var phone = $('#phone').val();
+                var confirmPassword = $('#confirmPassword').val();
+                // Regular expressions for email and password validation
+                var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+                var passwordPattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&+=!])(?!.*\s).{8,}$/;
+
+                var phonePattern = /^[0-9]+$/
+                var namePattern = /^[A-Za-z]+$/;
+                // Error messages
+                var emailError = '';
+                var passwordError1 = '';
+                var passwordError2 = '';
+                var passwordError3 = '';
+                var passwordError4 = '';
+                var passwordError5 = '';
+                var passwordError6 = '';
+                var firstNameError = '';
+                var lastNameError = '';
+                var phoneError = '';
+                var confirmPasswordError = '';
+                // Validate email
+                if (!emailPattern.test(email)) {
+                    emailError = 'Enter a valid email address';
+                }
+                // Validate password
+                if (!/^(?=.*[A-Z]).*$/.test(password)) {
+                    passwordError1 = 'Need atleast one Upper case character';
+                }
+                if (!/^(?=.*[a-z]).*$/.test(password)) {
+                    passwordError2 = 'Need atleast one Lower case case character';
+                }
+                if (!/^((?=.*\d)).*$/.test(password)) {
+                    passwordError3 = 'Need atleast one digit';
+                }
+                if (!/^(?=.*[@#$%^&+=!]).*$/.test(password)) {
+                    passwordError4 = 'Need atleast one Special character';
+                }
+                if (!/^(?!.*\s).*$/.test(password)) {
+                    passwordError5 = 'Should not contain space';
+                }
+                if (!/^.{8,}$/.test(password)) {
+                    passwordError6 = 'Atleast 8 charcter long';
+                }
+                if (firstName.trim() == "") {
+                    firstNameError = 'Enter your first name,';
+                } else {
+                    if (firstName.length <= 3)
+                        firstNameError = 'Name must contain at least 3 character'
+                }
+                if (lastName.trim() == "") {
+                    lastNameError = 'Enter your last name,';
+                }
+                if (phone == "") {
+                    phoneError = 'Enter your phone number';
+                } else {
+                    if (phone.length < 10)
+                        phoneError = "Must contain 10 digits"
+                    else if (!phonePattern.test(phone))
+                        phoneError = "Must not contain characters"
+                }
+                if (confirmPassword == "") {
+                    confirmPasswordError = 'Confirm Your password,';
+                }
+                // Display error messages or submit the form
+             if (emailError || passwordError1 || passwordError2 || passwordError3 || passwordError4 || passwordError5 || passwordError6 || firstNameError || lastNameError || confirmPasswordError || phoneError) {
+
+                    $('#email-Error').text(emailError);
+                    $('#password-Error1').text(passwordError1);
+                    $('#password-Error2').text(passwordError2);
+                    $('#password-Error3').text(passwordError3);
+                    $('#password-Error4').text(passwordError4);
+                    $('#password-Error5').text(passwordError5);
+                    $('#password-Error6').text(passwordError6);
+                    $('#phoneError').text(phoneError);
+                    $('#firstNameError').text(firstNameError);
+                    $('#lastNameError').text(lastNameError);
+                    $('#confirmPasswordError').text(confirmPasswordError);
+                } else {
+                    // Form is valid, you can submit it here or redirect to another page
+                    $('#email-Error').text('');
+                    $('#password-Error1').text('');
+                    $('#password-Error2').text('');
+                    $('#password-Error3').text('');
+                    $('#password-Error4').text('');
+                    $('#password-Error5').text('');
+                    $('#password-Error6').text('');
+                    $('#phoneError').text('');
+                    $('#firstNameError').text('');
+                    $('#lastNameError').text('');
+                    $('#confirmpasswordError').text('');
+                    $('#signupForm').unbind('submit').submit();
+                }
+            });
+        });
+        function nameVal() {
+            var firstName = document.getElementById('firstName').value
+            var firstNameError = document.getElementById('firstNameError')
+            var namePattern = /^[a-zA-Z]+$/
+            if (!namePattern.test(firstName)) {
+                firstNameError.innerHTML = "Only characters are allowed"
+                if (firstName.length == 0)
+                    firstNameError.innerHTML = ""
+                return false
+            }
+            else {
+                firstNameError.innerHTML = ""
+                return true
+            }
+        }
+        function phoneVal() {
+            numPattern = /^[6789]/
+            var phone = document.getElementById('phone').value
+            var phoneError = document.getElementById('phoneError')
+            if (!numPattern.test(phone)) {
+                phoneError.innerHTML = "Invalid Number"
+                if (phone.length == 0)
+                    phoneError.innerHTML = ""
+                return false
+            }
+            if (isNaN(phone)) {
+                phoneError.innerHTML = "Character is not allowed in this field"
+                if (phone.length == 0)
+                    phoneError.innerHTML = ""
+                return false
+            }
+            if (phone.length != 10) {
+                phoneError.innerHTML = "Must be 10 digits long"
+                if (phone.length == 0)
+                    phoneError.innerHTML = ""
+                return false
+            }
+            else {
+                phoneError.innerHTML = ""
+                return true
+            }
+        }
+        function confirmPasswordVal() {
+            var password = document.getElementById('passwordSignup').value
+            var confirmPassword = document.getElementById('confirmPassword').value
+            var confirmPasswordError = document.getElementById('confirmPasswordError')
+            if (password != confirmPassword) {
+                confirmPasswordError.innerHTML = "Password not match"
+                return false
+            }
+            else {
+                confirmPasswordError.innerHTML = ""
+                return true
+            }
+        }
+    </script>
+    <!-- Vendor JS-->
+    <script src="/frontEnd/javascripts/vendor/modernizr-3.6.0.min.js"></script>
+    <script src="/frontEnd/javascripts/vendor/jquery-3.6.0.min.js"></script>
+    <script src="/frontEnd/javascripts/vendor/jquery-migrate-3.3.0.min.js"></script>
+    <script src="/frontEnd/javascripts/vendor/bootstrap.bundle.min.js"></script>
+    <script src="/frontEnd/javascripts/plugins/slick.js"></script>
+    <script src="/frontEnd/javascripts/plugins/jquery.syotimer.min.js"></script>
+    <script src="/frontEnd/javascripts/plugins/wow.js"></script>
+    <script src="/frontEnd/javascripts/plugins/jquery-ui.js"></script>
+    <script src="/frontEnd/javascripts/plugins/perfect-scrollbar.js"></script>
+    <script src="/frontEnd/javascripts/plugins/magnific-popup.js"></script>
+    <script src="/frontEnd/javascripts/plugins/select2.min.js"></script>
+    <script src="/frontEnd/javascripts/plugins/waypoints.js"></script>
+    <script src="/frontEnd/javascripts/plugins/counterup.js"></script>
+    <script src="/frontEnd/javascripts/plugins/jquery.countdown.min.js"></script>
+    <script src="/frontEnd/javascripts/plugins/images-loaded.js"></script>
+    <script src="/frontEnd/javascripts/plugins/isotope.js"></script>
+    <script src="/frontEnd/javascripts/plugins/scrollup.js"></script>
+    <script src="/frontEnd/javascripts/plugins/jquery.vticker-min.js"></script>
+    <script src="/frontEnd/javascripts/plugins/jquery.theia.sticky.js"></script>
+    <!-- Template  JS -->
+    <script src="/frontEnd/javascripts/main.js?v=3.4"></script>
+    <script src="/frontEnd/javascripts/valid.js"></script>
+</body>
+</html>

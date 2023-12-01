@@ -1,0 +1,279 @@
+<%- include('../partials/admin/header.ejs') %>
+    <section class="content-main">
+        <form action="/admin/product/addProduct" id="productForm" method="post"
+            onsubmit="return validateProductForm(edit=false) " enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-9">
+                    <div class="content-header">
+                        <h2 class="content-title">Add New Product</h2>
+                        <% if (locals.success) { %>
+                            <p class="text-success" id="msg">
+                                <%= success %>
+                            </p>
+                            <% } %>
+                                <% if (locals.error) { %>
+                                    <p class="text-danger" id="msg">
+                                        <%= error %>
+                                    </p>
+                                    <% } %>
+                                        <div>
+                                            <!-- <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">Save to draft</button> -->
+                                            <button type="submit"
+                                                class="btn btn-md rounded font-sm hover-up">Publish</button>
+                                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Basic</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-4">
+                                <label for="product_name" class="form-label">Product title</label>
+                                <input type="text" placeholder="Type here" name="productName" class="form-control"
+                                    id="product_name">
+                                <p class="text-danger" id="nameError"></p>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Full description</label>
+                                <textarea placeholder="Type here" id="description" name="productDescription"
+                                    class="form-control" rows="4"></textarea>
+                                <p class="text-danger" id="descriptionError"></p>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="mb-4">
+                                        <label class="form-label">Regular price</label>
+                                        <div class="row gx-2">
+                                            <input placeholder="₹" id="RP" name="regularPrice" type="text"
+                                                class="form-control">
+                                            <p class="text-danger" id="regularPriceError"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="mb-4">
+                                        <label class="form-label">Selling price</label>
+                                        <input placeholder="₹" type="text" name="sellingPrice" id="SP"
+                                            class="form-control">
+                                        <p class="text-danger" id="sellingPriceError"></p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="mb-4">
+                                        <label class="form-label">No of Stock</label>
+                                        <input placeholder="0" type="text" name="stock" id="stock" class="form-control">
+                                        <p class="text-danger" id="stockError"></p>
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+
+        </form>
+        </div>
+        </div> <!-- card end// -->
+        <div class="row">
+            <div class="col-9"> 
+                <div class="col-lg-4">
+                    <div class="mb-4">
+                        <label class="form-label">Product Discount</label>
+                        <div class="row gx-2">
+                            <input placeholder="%"  id="productDiscount" name="productDiscount" type="text" class="form-control">
+                            <p class="text-danger" id="productDiscountError"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4>Media</h4>
+                </div>
+                <div class="card-body">
+                    <div class="input-upload">
+                        <img src="/backEnd/images/theme/upload.svg" alt="upload">
+                        <input class="form-control" id="img" type="file" name="productImage" multiple>
+                        <p class="text-danger" id="imageError"></p>
+                    </div>
+                </div>
+                <!-- <button id="cropButton" class="btn btn-md rounded font-sm hover-up">Crop Image</button> -->
+            </div> <!-- card end// -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4>Category</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row gx-2">
+                        <div class="col-md-9">
+                            <div class="mb-4">
+                                <p class="text-danger" id="categoryError"></p>
+                                <% if (categories.length) { %>
+                                    <% for(category of categories) { %>
+                                        <label class="mb-2 form-check form-check-inline" style="width: 100%;">
+                                            <input class="form-check-input" value="<%=category.categoryName%>"
+                                                id="category" name="category" type="radio"
+                                                onclick="provideDiscount('<%=category._id%>')">
+
+                                            <span class="form-check-label">
+                                                <%=category.categoryName %>
+                                            </span>
+                                        </label>
+                                        <% } %>
+                                            <% }else{%>
+                                                <div>
+                                                    <H1>NO Categories Created</H1>
+                                                </div>
+                                                <% } %>
+                            </div>
+                        </div> <!-- col.// -->
+                    </div> <!-- row.// -->
+                </div>
+            </div> <!-- card end// -->
+        </div>
+        <div class="col-lg-3" id="cropContainer">
+        </div>
+        </div>
+        </form>
+    </section><!--  content-main en -->
+    <script>
+    function validateProductForm() {
+        var productname = document.getElementById("product_name").value
+        var description = document.getElementById("description").value
+        var rp = document.getElementById("RP").value
+        var sp = document.getElementById("SP").value
+        var stock = document.getElementById("stock").value
+        var imageInput = document.getElementById("img")
+        var category = document.getElementsByName("category")
+        var is_valid = true
+        var nameError = ""
+        var descriptionError = ""
+        var regularPriceError = ""
+        var sellingPriceError = ""
+        var imageError = ""
+        var stockError = ""
+        var categoryError = ""
+
+        if (productname.trim() === "") nameError = "Enter the product title"
+        if (description.trim() === "")
+            descriptionError = "Enter the product description"
+        if (rp.trim() === "") regularPriceError = "Regular price is required"
+        if (!/^[0-9]+$/.test(rp))
+            regularPriceError = "Regular Price should be a number"
+        if (rp < 0) regularPriceError = "Regular price cannot be negative"
+        if (sp.trim() === "") sellingPriceError = "Selling price is required"
+        if (!/^[0-9]+$/.test(sp))
+            sellingPriceError = "Selling price should be a number"
+        if (sp < 0) sellingPriceError = "Selling price cannot be negative"
+        if (stock.trim() === "") stockError = "No of stock is required"
+        if (!/^[0-9]+$/.test(stock)) stockError = "No of stock should be a digit"
+
+        if (imageInput.files.length === 0) {
+            imageError = "At least one image is required"
+            is_valid = false
+        } else {
+            // Loop through each selected file
+            for (var i = 0; i < imageInput.files.length; i++) {
+                var file = imageInput.files[i]
+
+                // Check the file extension or MIME type for each file
+                var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i
+                if (!allowedExtensions.exec(file.name)) {
+                    imageError =
+                        "Invalid file format. Only JPG, JPEG, PNG are allowed."
+                    is_valid = false
+                    break // Stop the loop if an invalid file is found
+                }
+            }
+        }
+
+        var categoryChecked = false
+        for (let i = 0; i < category.length; i++) {
+            if (category[i].checked) {
+                categoryChecked = true
+                break
+            }
+        }
+        if (!categoryChecked) {
+            is_valid = false
+            categoryError = "Product category is required"
+        }
+
+        if (
+            nameError ||
+            descriptionError ||
+            sellingPriceError ||
+            regularPriceError ||
+            stockError ||
+            imageError ||
+            categoryError
+        ) {
+            document.getElementById("nameError").innerHTML = nameError
+            document.getElementById("descriptionError").innerHTML = descriptionError
+            document.getElementById("regularPriceError").innerHTML =
+                regularPriceError
+            document.getElementById("sellingPriceError").innerHTML =
+                sellingPriceError
+            document.getElementById("stockError").innerHTML = stockError
+            document.getElementById("imageError").innerHTML = imageError
+            document.getElementById("categoryError").innerHTML = categoryError
+            return false
+        } else {
+            return true
+        }
+        // If all fields are non-empty, the form will be submitted.
+    }
+
+    </script>
+    <script>
+    let categoryDiscount=null
+     function provideDiscount(id) {
+            $.ajax({
+                type: "GET",
+                url: `/admin/product/provideDiscount?id=${id}`,
+                success: function (response) {
+                    if (response.success) {
+                        var discount = response.discount
+                        var productDiscount = $("#productDiscount").val()
+                        var regularPrice = $("#RP").val()
+                        var sellingPrice =
+                            regularPrice - Math.ceil((regularPrice * discount) / 100)
+                        categoryDiscount = discount
+                        if (productDiscount < categoryDiscount)
+                            $("#SP").val(sellingPrice)
+                    }
+                },
+                error: function (error) { },
+            })
+        }
+
+        // Attach a keyup event listener to the input field with id "SP"
+        $("#productDiscount").on("keyup", function () {
+            var regularPrice = $("#RP").val()
+            console.log(categoryDiscount)
+
+            var productDiscount = $(this).val()
+
+            if (productDiscount < 0) {
+                $("#productDiscountError").text("Negative nuumber not allowed")
+            } else if (productDiscount > 100) {
+                $("#productDiscountError").text("Should less than 100")
+            } else {
+                $("#productDiscountError").text("")
+                var discountedSellingPrice =
+                    regularPrice - Math.ceil((regularPrice * productDiscount) / 100)
+                if (categoryDiscount < productDiscount)
+                    $("#SP").val(discountedSellingPrice)
+            }
+        })
+    </script>
+    <script>
+        // Function to hide the success message after a specified timeout
+      
+       
+    </script>
+    <%- include('../partials/admin/footer.ejs') %>

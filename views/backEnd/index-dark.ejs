@@ -1,0 +1,98 @@
+<%- include('../partials/admin/header.ejs') %>
+    <section class="content-main">
+        <div class="content-header">
+            <div>
+                <h2 class="content-title card-title">Dashboard </h2>
+                <p>Whole data about your business here</p>
+            </div>
+            <div>
+                <!-- <a href="#" class="btn btn-primary"><i class="text-muted material-icons md-post_add"></i>Create report</a> -->
+            </div>
+        </div>
+        <div class="row">
+            <!-- <div class="col-lg-3">
+                <div class="card card-body mb-4">
+                    <article class="icontext">
+                        <span class="icon icon-sm rounded-circle bg-primary-light"><i
+                                class="text-primary material-icons md-monetization_on"></i></span>
+                        <div class="text">
+                            <h6 class="mb-1 card-title">Revenue</h6>
+                            <span>$13,456.5</span>
+                            <span class="text-sm">
+                                Shipping fees are not included
+                            </span>
+                        </div>
+                    </article>
+                </div>
+            </div> -->
+            <div class="col-lg-3">
+                <div class="card card-body mb-4">
+                    <article class="icontext">
+                        <span class="icon icon-sm rounded-circle bg-success-light"><i
+                                class="text-success material-icons ">local_shipping</i></span>
+                        <div class="text">
+                            <h6 class="mb-1 card-title">Orders</h6> <span><%= order.length %></span>
+                            <span class="text-sm">
+                                Excluding orders in transit
+                            </span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="card card-body mb-4">
+                    <article class="icontext">
+                        <span class="icon icon-sm rounded-circle bg-warning-light"><i
+                                class="text-warning material-icons">qr_code</i></span>
+                        <div class="text">
+                            <h6 class="mb-1 card-title">Products</h6> <span><%= product.length %></span>
+                            <span class="text-sm">
+                                In <%= category.length %> Categories
+                            </span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+            <!-- <div class="col-lg-3">
+                <div class="card card-body mb-4">
+                    <article class="icontext">
+                        <span class="icon icon-sm rounded-circle bg-info-light"><i
+                                class="text-info material-icons md-shopping_basket"></i></span>
+                        <div class="text">
+                            <h6 class="mb-1 card-title">Monthly Earning</h6> <span>$6,982</span>
+                            <span class="text-sm">
+                                Based in your local time.
+                            </span>
+                        </div>
+                    </article>
+                </div>
+            </div> -->
+        </div>
+        <div class="row">
+            <div class="col-xl-8 col-lg-12">
+                <button id="dailyButton"
+                    style="display: inline-block; margin-right: 10px; padding: 10px; background-color: #4CAF50; color: white; border: none; text-align: center; text-decoration: none; display: inline-block; font-size: 16px;">Weekly</button>
+                
+                <button id="monthlyButton"
+                    style="display: inline-block; margin-right: 10px; padding: 10px; background-color: #008CBA; color: white; border: none; text-align: center; text-decoration: none; display: inline-block; font-size: 16px;">Monthly</button>
+                
+                <button id="yearlyButton"
+                    style="display: inline-block; margin-right: 10px; padding: 10px; background-color: #f44336; color: white; border: none; text-align: center; text-decoration: none; display: inline-block; font-size: 16px;">Yearly</button>
+
+                <div class="card mb-4">
+                
+                    <article class="card-body">
+                        <h5 class="card-title">Sale statistics</h5>
+                        <canvas id="myChart" height="120px"></canvas>
+                    </article>
+                </div>
+              
+            </div>
+           
+        </div>
+   
+        </div>
+        </div>
+       
+    </section> <!-- content-main end// -->
+    <%- include('../partials/admin/footer.ejs') %>

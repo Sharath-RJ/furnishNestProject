@@ -1,0 +1,214 @@
+<%- include('../partials/admin/header.ejs') %>
+    <section class="content-main">
+        <!--Form tag opening-->
+        <form action="/admin/product/editProduct?id=<%=product._id %>" method="post" id="productEditForm"
+            enctype="multipart/form-data" onsubmit="return validateEditProduct()">
+            <div class="row">
+                <div class="col-9">
+                    <div class="content-header">
+                        <h2 class="content-title">Update Product</h2>
+                        <div>
+                            <!-- <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">Save to
+                                draft</button> -->
+                            <button type="submit" class="btn btn-md rounded font-sm hover-up">Update</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Basic</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-4">
+                                <label for="product_name" class="form-label">Product title</label>
+                                <input type="text" name="productName" value="<%= product.productName %>"
+                                    placeholder="Type here" class="form-control" id="product_name">
+                                <p class="text-danger" id="nameError"></p>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Full description</label>
+                                <textarea id="description" name="productDescription" placeholder="Type here" class="form-control"
+                                    rows="4"><%= product.productDescription %></textarea>
+                                <p class="text-danger" id="descriptionError"></p>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="mb-4">
+                                        <label class="form-label">Regular price</label>
+                                        <div class="row gx-2">
+                                            <input id="RP" placeholder="₹" value="<%= product.regularPrice %>"
+                                                name="regularPrice" type="text" class="form-control">
+                                            <p class="text-danger" id="regularPriceError"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="mb-4">
+                                        <label class="form-label">Selling price</label>
+                                        <input id="SP" placeholder="₹" value="<%= product.sellingPrice %>" name="sellingPrice"
+                                            type="text" class="form-control">
+                                        <p class="text-danger" id="sellingPriceError"></p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="mb-4">
+                                        <label class="form-label">No of Stock</label>
+                                        <input id="Stock" placeholder="0" value="<%= product.productStock %>" type="text"
+                                            name="productStock" class="form-control">
+                                        <p class="text-danger" id="stockError"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- card end// -->
+                    <div class="row">
+                        <div class="col-9">
+                            <div class="col-lg-4">
+                                <div class="mb-4">
+                                    <label class="form-label">Product Discount</label>
+                                    <div class="row gx-2">
+                                        <input placeholder="%" value="<%= product.productDiscount%>" onkeyup="productDiscount(this)" id="productDiscount" name="productDiscount"
+                                            type="text" class="form-control">
+                                        <p class="text-danger" id="productDiscountError"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Media</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="input-upload">
+                                <% for( i in product.productImage ) { %>
+                                     <div class="d-flex" id="img_cont_<%=i%>">
+                                        <img src="/backEnd/images/cropped_image/<%= product.productImage[i]%>"
+                                            alt="image" width="50" height="50" id="imgView<%= i %>">
+                                        <input id="img" style="width: 90px;" type="file" name="productImage" data-index="<%= i %>"
+                                            onchange="viewImage(event,'<%=i%>')">
+                                        <a  onclick="productImageDelete('<%= i %>','<%= product._id %>')"><i class="fa fa-trash ms-5"></i></a>
+                                       
+                                    </div> 
+                                    <% } %>
+                               
+                                <div id="cropButton" class="btn btn-md w-100 rounded font-sm hover-up">
+                                    <p class="text-start font-sm">Add new Image</p>
+                                    <input type="file" name="productImage" multiple> 
+                                </div>
+                              
+                                
+                            </div>
+                            <!-- <input class="form-control" type="file" name="productImage" onchange="viewImage(event);"> -->
+                            <!-- <input type="file" name="image1">
+                                 <input type="file" name="image1"> -->
+                        </div>
+                    </div> <!-- card end// -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Category</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row gx-2">
+                                <div class="col-md-9">
+                                    <div class="mb-4">
+                                        <% if (categories.length) { %>
+                                            <% for(category of categories) { %>
+                                                <label class="mb-2 form-check form-check-inline" style="width: 100%;">
+                                                    <% if (product.productCategory==category.categoryName) { %>
+                                                        <input id="category" class="form-check-input"
+                                                            value="<%=category.categoryName %>" onclick="provideDiscount('<%=category._id%>')" name="productCategory"
+                                                            type="radio" checked>
+                                                        <% }else{%>
+                                                            <input class="form-check-input"
+                                                                value="<%=category.categoryName %>"
+                                                                name="productCategory" onclick="provideDiscount('<%=category._id%>')" type="radio">
+                                                            <%}%>
+                                                                <span class="form-check-label">
+                                                                    <%=category.categoryName %>
+                                                                </span>
+                                                </label>
+                                                <% } %>
+                                                    <% }else{%>
+                                                        <div>
+                                                            <H1>NO Categories Created</H1>
+                                                        </div>
+                                                        <% } %>
+                                    </div>
+                                </div> <!-- col.// -->
+                            </div> <!-- row.// -->
+                        </div>
+                    </div> <!-- card end// -->
+                </div>
+            </div>
+        </form> <!--Form tag closeing-->
+    </section> <!-- content-main end// -->
+    <script>
+   function validateEditProduct() {
+        // Get references to form elements
+        const productName = document.getElementById("product_name").value
+        const description = document.getElementById("description").value
+        const regularPrice = document.getElementById("RP").value
+        const sellingPrice = document.getElementById("SP").value
+        const stock = document.getElementById("Stock").value
+        // Get references to error elements
+        const nameError = document.getElementById("nameError")
+        const descriptionError = document.getElementById("descriptionError")
+        const regularPriceError = document.getElementById("regularPriceError")
+        const sellingPriceError = document.getElementById("sellingPriceError")
+        const stockError = document.getElementById("stockError")
+        // Reset error messages
+        nameError.textContent = ""
+        descriptionError.textContent = ""
+        regularPriceError.textContent = ""
+        sellingPriceError.textContent = ""
+        stockError.textContent = ""
+        let isValid = true
+        // Validate product name (required)
+        if (productName.trim() === "") {
+            nameError.textContent = "Product name is required."
+            isValid = false
+        }
+        // Validate description (required)
+        if (description.trim() === "") {
+            descriptionError.textContent = "Product description is required."
+            isValid = false
+        }
+        // Validate regular price (required and numeric)
+        if (regularPrice.trim() === "") {
+            regularPriceError.textContent = "Regular price is required."
+            isValid = false
+        } else if (isNaN(regularPrice)) {
+            regularPriceError.textContent = "Regular price must be a number."
+            isValid = false
+        } else if (regularPrice < 0) {
+            regularPriceError.textContent = "Regular price must be positive"
+            isValid = false
+        }
+        // Validate selling price (required and numeric)
+        if (sellingPrice.trim() === "") {
+            sellingPriceError.textContent = "Selling price is required."
+            isValid = false
+        } else if (isNaN(sellingPrice)) {
+            sellingPriceError.textContent = "Selling price must be a number."
+            isValid = false
+        } else if (sellingPrice < 0) {
+            sellingPriceError.textContent = "Selling price must be posstitve"
+            isValid = false
+        }
+        // Validate stock (required and numeric)
+        if (stock.trim() === "") {
+            stockError.textContent = "Stock quantity is required."
+            isValid = false
+        } else if (isNaN(stock)) {
+            stockError.textContent = "Stock quantity must be a number."
+            isValid = false
+        }
+        return isValid
+    }
+    </script>
+   
+    <%- include('../partials/admin/footer.ejs') %>

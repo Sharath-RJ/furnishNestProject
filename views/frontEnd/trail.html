@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Furnish Nest - Login</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/frontEnd/images/banner/logo.png">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="/frontEnd/stylesheets/main.css?v=3.4">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .login-container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            margin-top: 50px;
+        }
+
+        .login-container h3 {
+            text-align: center;
+            color: #333;
+        }
+
+        .login-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .login-footer a {
+            color: #6c757d;
+            text-decoration: none;
+        }
+
+        .login-footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+</head>
+
+<body>
+    <main class="main">
+        <section class="pt-150 pb-150">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-10 m-auto">
+                        <div class="row">
+                            <div class="col-lg-5">
+                                <div class="login-container">
+                                    <div class="heading_s1">
+                                        <h3 class="mb-4">Login to Furnish Nest</h3>
+                                    </div>
+                                    <form method="post" action="/login" id="loginForm">
+                                        <% if (locals.message) { %>
+                                            <p class="text-danger">
+                                                <%= message %>
+                                            </p>
+                                            <% } %>
+                                                <% if (locals.success) { %>
+                                                    <p class="text-success">
+                                                        <%= success %>
+                                                    </p>
+                                                    <% } %>
+                                                        <div class="form-group">
+                                                            <input type="text" id="email" name="email"
+                                                                placeholder="Your Email" class="form-control">
+                                                            <p class="text-danger" id="emailError"></p>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input type="password" id="password" name="password"
+                                                                placeholder="Password" class="form-control">
+                                                            <p class="text-danger" id="passwordError"></p>
+                                                        </div>
+                                                        <div class="login-footer form-group">
+                                                            <div class="chek-form">
+                                                                <div class="custom-control custom-checkbox">
+                                                                    <input type="checkbox" class="custom-control-input"
+                                                                        id="exampleCheckbox1" name="checkbox">
+                                                                    <label class="custom-control-label"
+                                                                        for="exampleCheckbox1">Remember me</label>
+                                                                </div>
+                                                            </div>
+                                                            <a class="text-muted" onclick="forgotPassword()">Forgot
+                                                                password?</a>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <button type="submit" class="btn btn-primary btn-block">Log
+                                                                in</button>
+                                                        </div>
+                                                        <div class="login-footer">
+                                                            <a class="text-muted" href="/registerLoad">Create a new
+                                                                account</a>
+                                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="col-lg-1"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- Preloader Start -->
+    <div id="preloader-active">
+        <div class="preloader d-flex align-items-center justify-content-center">
+            <div class="preloader-inner position-relative">
+                <div class="text-center">
+                    <img src="/frontEnd/images/banner/logo.png" width="300" height="100" alt="Furnish Nest">
+                    <div class="loader">
+                        <div class="bar bar1"></div>
+                        <div class="bar bar2"></div>
+                        <div class="bar bar3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            // Your existing JavaScript code here
+        });
+    </script>
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <!-- Vendor JS-->
+    <script src="/frontEnd/javascripts/vendor/modernizr-3.6.0.min.js"></script>
+    <script src="/frontEnd/javascripts/vendor/jquery-3.6.0.min.js"></script>
+    <script src="/frontEnd/javascripts/vendor/jquery-migrate-3.3.0.min.js"></script>
+    <script src="/frontEnd/javascripts/vendor/bootstrap.bundle.min.js"></script>
+    <script src="/frontEnd/javascripts/plugins/slick.js"></script>
+    <script src="/frontEnd/javascripts/plugins/jquery.syotimer.min.js"></script>
+    <script src="/frontEnd/javascripts/plugins/wow.js"></script>
+    <script src="/frontEnd/javascripts/plugins/jquery-ui.js"></script>
+    <script src="/frontEnd/javascripts/plugins/perfect-scrollbar.js"></script>
+    <script src="/frontEnd/javascripts/plugins/magnific-popup.js"></script>
+    <script src="/frontEnd/javascripts/plugins/select2.min.js"></script>
+    <script src="/frontEnd/javascripts/plugins/waypoints.js"></script>
+    <script src="/frontEnd/javascripts/plugins/counterup.js"></script>
+    <script src="/frontEnd/javascripts/plugins/jquery.countdown.min.js"></script>
+    <script src="/frontEnd/javascripts/plugins/images-loaded.js"></script>
+    <script src="/frontEnd/javascripts/plugins/isotope.js"></script>
+    <script src="/frontEnd/javascripts/plugins/scrollup.js"></script>
+    <script src="/frontEnd/javascripts/plugins/jquery.vticker-min.js"></script>
+    <script src="/frontEnd/javascripts/plugins/jquery.theia.sticky.js"></script>
+    <!-- Template JS -->
+    <script src="/frontEnd/javascripts/main.js?v=3.4"></script>
+    <script src="/frontEnd/javascripts/valid.js"></script>
+</body>
+
+</html>

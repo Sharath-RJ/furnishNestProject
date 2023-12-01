@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Furnish Nest</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/frontEnd/images/banner/logo.png">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="/frontEnd/stylesheets/main.css?v=3.4">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <main class="main">
+        <!-- <div class="page-header breadcrumb-wrap">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="index.html" rel="nofollow">Home</a>
+                    <span></span> Pages
+                    <span></span> Account
+                </div>
+            </div>
+        </div> -->
+        <section class="pt-150 pb-150">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-10 m-auto">
+                        <p class="text-danger" id="error-message"></p>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="dashboard-menu">
+                                    <ul class="nav flex-column" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="dashboard-tab" data-bs-toggle="tab"
+                                                href="#dashboard" role="tab" aria-controls="dashboard"
+                                                aria-selected="false"><i class="fas fa-user mr-10"></i>Personal
+                                                Information</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="orders-tab" data-bs-toggle="tab" href="#orders"
+                                                role="tab" aria-controls="orders" aria-selected="false"><i
+                                                    class="fas fa-shopping-basket mr-10"></i>Orders</a>
+                                        </li>
+                                     
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="address-tab" data-bs-toggle="tab" href="#address"
+                                                role="tab" aria-controls="address" aria-selected="true"><i
+                                                    class="fas fa-marker mr-10"></i>My Address</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="account-detail-tab" data-bs-toggle="tab"
+                                                href="#account-detail" role="tab" aria-controls="account-detail"
+                                                aria-selected="true"><i class="fas fa-lock mr-10"></i>Change
+                                                Password</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="account-detail-tab" data-bs-toggle="tab"
+                                                href="#wallet-details" role="tab" aria-controls="account-detail"
+                                                aria-selected="true"><i class="fas fa-lock mr-10"></i>Wallet</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/logout"><i
+                                                    class="fas fa-sign-out mr-10"></i>Logout</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-8" id="edit-content">
+                                <div class="tab-content dashboard-content">
+                                    <div class="tab-pane fade active show" id="dashboard" role="tabpanel"
+                                        aria-labelledby="dashboard-tab">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5 class="mb-0">Personal Information</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <hr>
+                                                <div class="row">
+                                                    <div class="col-sm-3">
+                                                        <h6 class="mb-0">First Name</h6>
+                                                    </div>
+                                                    <div class="col-sm-3 text-secondary">
+                                                        <%=userDetails.firstName%>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <h6 class="mb-0">Second Name</h6>
+                                                    </div>
+                                                    <div class="col-sm-3 text-secondary">
+                                                        <%= userDetails.lastName %>
+                                                    </div>
+                                                </div>
+                                                <hr>
+                                                <div class="row">
+                                                    <div class="col-sm-3">
+                                                        <h6 class="mb-0">Email</h6>
+                                                    </div>
+                                                    <div class="col-sm-9 text-secondary">
+                                                        <%= userDetails.email %>
+                                                    </div>
+                                                </div>
+                                                <hr>
+                                                <div class="row">
+                                                    <div class="col-sm-3">
+                                                        <h6 class="mb-0">Phone</h6>
+                                                    </div>
+                                                    <div class="col-sm-9 text-secondary">
+                                                        <%= userDetails.phone %>
+                                                    </div>
+                                                </div>
+                                                <hr>
+                                                <div class="row d-flex align-items-center">
+                                                    <div class="col-sm-12">
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <button type="submit" class="btn btn-fill-out submit"
+                                                                onclick="personalInfoEdit()"
+                                                                id="">Edit</button>
+                                                            <div class="ml-2 p-1"
+                                                                style="border: 1px solid black;border-radius: 8px;">
+                                                                <p class="text-dark"
+                                                                    style="font-size: 18px; padding: 5px;">Referral
+                                                                    Code: <span
+                                                                        style="font-weight: bold; color: #4CAF50;">
+                                                                        <%= userDetails.referalCode %>
+                                                                    </span></p>
+                                                                <p
+                                                                    style="font-size: 16px; color: #333; text-align: center; padding: 10px;">
+                                                                    Refer a friend and get <span
+                                                                        style="font-weight: bold; color: #4CAF50;">₹100</span>
+                                                                    in your wallet! Your friend
+                                                                    will receive a welcome bonus of <span
+                                                                        style="font-weight: bold; color: #4CAF50;">₹50</span>.
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-tab">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5 class="mb-0">Your Orders</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <% if (myOrders.length) { %>
+                                                        <table class="table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Image</th>
+                                                                    <th>Total</th>
+                                                                    <th>Status</th>
+                                                                    <th>Date</th>
+                                                                    <th>Payment</th>
+                                                                    <th>Actions</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <% for(orders of myOrders) { %>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <% orders.products.slice(0, 2).forEach((element, i)=> { %>
+                                                                                <img src="/backEnd/images/cropped_image/<%= element.image[0] %>" width="40" height="40" class="img-xs" alt="Item">
+                                                                                <% }) %>
+                                                                                    <% if (orders.products.length> 2) { %>
+                                                                                        <!-- Display ellipsis or any other indicator for more images -->
+                                                                                        <span style="font-size: 30px;"> . . .</span>
+                                                                                        <% } %>
+
+                                                                    
+                                                                           
+                                                                           
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= orders.total %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= orders.status %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= orders.date %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= orders.paymentMethod %>
+                                                                        </td>
+                                                                        <td><a href="/profile/viewOrderDetails?id=<%=orders._id%>"
+                                                                                class="btn-small d-block">View</a></td>
+                                                                    </tr>
+                                                                    <% } %>
+                                                            </tbody>
+                                                        </table>
+                                                        <% }else{%>
+                                                            <h2>No Order</h2>
+                                                            <%} %>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="track-orders" role="tabpanel"
+                                        aria-labelledby="track-orders-tab">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5 class="mb-0">Orders tracking</h5>
+                                            </div>
+                                            <div class="card-body contact-from-area">
+                                                <p>To track your order please enter your OrderID in the box below and
+                                                    press "Track" button. This was given to you on your receipt and in
+                                                    the confirmation email you should have received.</p>
+                                                <div class="row">
+                                                    <div class="col-lg-8">
+                                                        <form class="contact-form-style mt-30 mb-50" action="#"
+                                                            method="post">
+                                                            <div class="input-style mb-20">
+                                                                <label>Order ID</label>
+                                                                <input name="order-id"
+                                                                    placeholder="Found in your order confirmation email"
+                                                                    type="text" class="square">
+                                                            </div>
+                                                            <div class="input-style mb-20">
+                                                                <label>Billing email</label>
+                                                                <input name="billing-email"
+                                                                    placeholder="Email you used during checkout"
+                                                                    type="email" class="square">
+                                                            </div>
+                                                            <button class="submit submit-auto-width"
+                                                                type="submit">Track</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="address" role="tabpanel"
+                                        aria-labelledby="address-tab">
+                                        <div class="row">
+                                           
+                                            <div class="col-lg-6">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h5 class="mb-0">Shipping Address</h5>
+                                                    </div>
+                                                    <% for( add of address ) { %>
+                                                        <div class="card-body">
+                                                            <address>
+                                                                <%= add.address %>
+                                                            </address>
+                                                            <!-- <a href="#" class="btn-small" id="edit-address-tab">Edit</a> -->
+                                                            <a href="#" onclick="addressEdit('<%=add._id%>')">
+                                                                <button class="btn btn-fill-out submit"
+                                                                    style="padding: 0 7px;">Edit</button></a>
+                                                        </div>
+                                                        <% } %>
+                                                </div>
+                                                <br><br>
+                                                <ul class="nav flex-column" role="tablist">
+                                                    <li class="nav-item">
+                                                        <a class="btn" id="track-orders-tab" data-bs-toggle="tab"
+                                                            href="#add-address" role="tab" aria-controls="track-orders"
+                                                            aria-selected="false"><i class=""></i>Add
+                                                            Address</a>
+                                                    </li>
+                                                </ul>
+                                                <!-- <a href="#add-address"><button>Add Address</button></a> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--Add Address Page-->
+                                    <div class="tab-pane fade" id="add-address" role="tabpanel"
+                                        aria-labelledby="add-address-tab">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5>Add Address</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <form action="/addAddress" method="post" id="addAddress">
+                                                    <div class="form-group">
+                                                        <input type="text" id="firstName" name="firstName"
+                                                            placeholder="First name *">
+                                                        <p class="text-danger" id="firstNameError"></p>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" id="lastName" name="lastName"
+                                                            placeholder="Last name *">
+                                                        <p class="text-danger" id="lastNameError"></p>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" name="address" id="addressField"
+                                                            placeholder="Address *">
+                                                        <p class="text-danger" id="addressError"></p>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" id="city" name="city"
+                                                            placeholder="City / Town *">
+                                                        <p class="text-danger" id="cityError"></p>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" id="state" name="state"
+                                                            placeholder="State / County *">
+                                                        <p class="text-danger" id="stateError"></p>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" id="pincode" name="zipcode"
+                                                            placeholder="Postcode / ZIP *">
+                                                        <p class="text-danger" id="zipcodeError"></p>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" id="landMark" name="landMark"
+                                                            placeholder="Land Mark*">
+                                                        <p class="text-danger" id="landMarkError"></p>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" id="phone" name="phone"
+                                                            placeholder="Phone *">
+                                                        <p class="text-danger" id="phoneError"></p>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" id="email" name="email"
+                                                            placeholder="Email address *">
+                                                        <p class="text-danger" id="emailError"></p>
+                                                    </div>
+                                                    <button type="submit">Add Address</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="account-detail" role="tabpanel"
+                                        aria-labelledby="account-detail-tab">
+                                        <p class="text-danger" id="incrt-pass-err"></p>
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5>Change Password</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <!-- <form action="/changePassword" method="post" -->
+                                                <form id="change-password-form">
+                                                    <div class="row">
+                                                        <div class="form-group col-md-12">
+                                                            <input class="form-control square" name="oldPassword"
+                                                                type="password" id="oldPassword"
+                                                                placeholder="CurrentPassword">
+                                                            <p class="text-danger" id="oldPasswordError"></p>
+                                                        </div>
+                                                        <div class="form-group col-md-12">
+                                                            <input class="form-control square" name="newPassword"
+                                                                type="password" id="newPassword"
+                                                                placeholder="New Password">
+                                                            <p class="text-danger" id="newPasswordError"></p>
+                                                        </div>
+                                                        <div class="form-group col-md-12">
+                                                            <input class="form-control square" name="confirmPassword"
+                                                                onkeyup="confirmPasswordVal()" type="password"
+                                                                id="confirmPassword" placeholder="Confirm Password">
+                                                            <p class="text-danger" id="confirmPasswordError"></p>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <button type="submit" class="btn btn-fill-out submit"
+                                                                name="submit" id="change-password-button">Save</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="wallet-details" role="tabpanel"
+                                        aria-labelledby="account-detail-tab">
+                                        <p class="text-danger" id="incrt-pass-err"></p>
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5>Wallet</h5>
+                                            </div>
+
+
+                                            <div class="card-body">
+                                                <div class="wallet-card">
+                                                    <div class="card-chip"></div>
+                                                    <p class="amount-label">Available Balance</p>
+                                                    <h1 class="wallet-balance">₹<%=userDetails.wallet%>
+                                                    </h1>
+
+                                                </div>
+
+                                                <div id="transaction-history">
+                                                    <h2>Transaction History</h2>
+                                                    <% for(wallet of walletTransaction) { %>
+                                                        <div class="transaction-card">
+                                                            <p>Date: <%= wallet.createdAt.toLocaleString('en-US', {
+                                                                    month: 'numeric' , day: 'numeric' , year: 'numeric'
+                                                                    , hour: '2-digit' , minute: '2-digit' ,
+                                                                    second: '2-digit' , hour12: true }) %>
+                                                            </p>
+                                                            <p>Type: <%=wallet.type %>
+                                                            </p>
+                                                            <p>Amount: ₹ <%=wallet.amount%>
+                                                            </p>
+
+                                                        </div>
+                                                        <% } %>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script>
+        // Display the modal when clicking the "Edit Address" button
+    </script>
+    <script>
+        function validateForm() {
+            // Clear previous error messages
+            document.getElementById("oldPasswordError").textContent = " "
+            document.getElementById("newPasswordError").textContent = " ";
+            document.getElementById("confirmPasswordError").textContent = " ";
+            // Get input values
+            var oldPassword = document.getElementById("oldPassword").value;
+            var newPassword = document.getElementById("newPassword").value;
+            var confirmPassword = document.getElementById("confirmPassword").value;
+            var isValid = true;
+            if (oldPassword === "") {
+                document.getElementById("oldPasswordError").textContent = "Current Password is required";
+                isValid = false;
+            }
+            if (newPassword === "") {
+                document.getElementById("newPasswordError").textContent = "New Password is required";
+                isValid = false;
+            }
+            if (confirmPassword === "") {
+                document.getElementById("confirmPasswordError").textContent = "Confirm Password is required";
+                isValid = false;
+            } else if (newPassword !== confirmPassword) {
+                document.getElementById("confirmPasswordError").textContent = "Passwords do not match";
+                isValid = false;
+            }
+            return isValid
+        }
+        function confirmPasswordVal() {
+            var password = document.getElementById('newPassword').value
+            var confirmPassword = document.getElementById('confirmPassword').value
+            var confirmPasswordError = document.getElementById('confirmPasswordError')
+            if (password != confirmPassword) {
+                confirmPasswordError.innerHTML = "Password not match"
+                return false
+            }
+            else {
+                confirmPasswordError.innerHTML = ""
+                return true
+            }
+        }
+        //when clicking change password this ajax want to work
+        $(document).ready(function () {
+            // Handle form submission
+            $('#change-password-form').submit(function (event) {
+                event.preventDefault();
+                // Call the form validations function
+                const isFormValid = validateForm();
+                // Call the AJAX request if form validation passes
+                if (isFormValid) {
+                    const formData = $(this).serialize();
+                    // Send a POST request via AJAX to the server
+                    $.ajax({
+                        type: 'POST',
+                        url: '/profile/changePassword', // Route on the server to handle password change
+                        data: formData,
+                        success: function (response) {
+                            if (response.response === 'PasswordMismatch') {
+                                // Display a SweetAlert for incorrect old password
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Old Password Incorrect',
+                                    text: 'Please enter the correct old password.',
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Password Changed',
+                                    text: 'successfully',
+                                });
+                                // Password changed successfully, you can handle this case
+                                // e.g., redirect to a success page or show a success message
+                            }
+                        },
+                        error: function (error) {
+                            // Handle other errors, if any
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
+    <!-- Preloader Start -->
+    <!-- <div id="preloader-active">
+        <div class="preloader d-flex align-items-center justify-content-center">
+            <div class="preloader-inner position-relative">
+                <div class="text-center">
+                    <h5 class="mb-5">Now Loading</h5>
+                    <div class="loader">
+                        <div class="bar bar1"></div>
+                        <div class="bar bar2"></div>
+                        <div class="bar bar3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <!-- Vendor JS-->
+    <script src="/frontEnd/javascripts/vendor/modernizr-3.6.0.min.js"></script>
+    <script src="/frontEnd/javascripts/vendor/jquery-3.6.0.min.js"></script>
+    <script src="/frontEnd/javascripts/vendor/jquery-migrate-3.3.0.min.js"></script>
+    <script src="/frontEnd/javascripts/vendor/bootstrap.bundle.min.js"></script>
+    <script src="/frontEnd/javascripts/plugins/slick.js"></script>
+    <script src="/frontEnd/javascripts/plugins/jquery.syotimer.min.js"></script>
+    <script src="/frontEnd/javascripts/plugins/wow.js"></script>
+    <script src="/frontEnd/javascripts/plugins/jquery-ui.js"></script>
+    <script src="/frontEnd/javascripts/plugins/perfect-scrollbar.js"></script>
+    <script src="/frontEnd/javascripts/plugins/magnific-popup.js"></script>
+    <script src="/frontEnd/javascripts/plugins/select2.min.js"></script>
+    <script src="/frontEnd/javascripts/plugins/waypoints.js"></script>
+    <script src="/frontEnd/javascripts/plugins/counterup.js"></script>
+    <script src="/frontEnd/javascripts/plugins/jquery.countdown.min.js"></script>
+    <script src="/frontEnd/javascripts/plugins/images-loaded.js"></script>
+    <script src="/frontEnd/javascripts/plugins/isotope.js"></script>
+    <script src="/frontEnd/javascripts/plugins/scrollup.js"></script>
+    <script src="/frontEnd/javascripts/plugins/jquery.vticker-min.js"></script>
+    <script src="/frontEnd/javascripts/plugins/jquery.theia.sticky.js"></script>
+    <!-- Template  JS -->
+    <script src=".//frontEnd/javascripts/main.js?v=3.4"></script>
+    <script>
+        $(document).ready(function () {
+            // Handle form submission
+            $("#addAddress").submit(function (event) {
+                event.preventDefault();
+                // Call the form validations function
+                const isFormValid = validateForm();
+                // Call the AJAX request if form validation passes
+                if (isFormValid) {
+                    const formData = $(this).serialize();
+                    // Send a POST request via AJAX to the server
+                    $.ajax({
+                        type: "POST",
+                        url: "/profile/addAddress", // Route on the server to handle address addition
+                        data: formData,
+                        success: function (response) {
+                            if (response.response === "saved") {
+                                // Display a success message
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'New Address Added',
+                                });
+                            } else {
+                                // Handle any error cases
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Some error occured',
+                                });
+                            }
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        },
+                    });
+                }
+            });
+            // Function to validate the form
+            // Function to validate the    "add address"  form
+            function validateForm() {
+                var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
+                var isValid = true;
+                // Reset error messages
+                $("p[id$='Error']").text('');
+                // Validation logic for each input
+                if ($("#firstName").val().trim() === "") {
+                    $("#firstNameError").text("First name is required");
+                    isValid = false;
+                } else if (/\d/.test($('#firstName').val())) {
+                    $("#firstNameError").text("fisrt name cannot be a number")
+                    isValid = false
+                } else if ($("#firstName").val().length < 3) {
+                    $("#firstNameError").text("Enter a valid name")
+                    isValid = false
+                }
+                if ($("#lastName").val().trim() === "") {
+                    $("#lastNameError").text("Last name is required");
+                    isValid = false;
+                } else if (/\d/.test($('#lastName').val())) {
+                    $("#lastNameError").text("last name cannot be a number")
+                    isValid = false
+                }
+                if ($("#addressField").val().trim() === "") {
+                    $("#addressError").text("Address is required");
+                    isValid = false;
+                }
+                if ($("#city").val().trim() === "") {
+                    $("#cityError").text("City is required");
+                    isValid = false;
+                } else if (/\d/.test($('#city').val())) {
+                    $("#cityError").text("city name cannot be a number")
+                    isValid = false
+                }
+                if ($("#state").val().trim() === "") {
+                    $("#stateError").text("State is required");
+                    isValid = false;
+                } else if (/\d/.test($('#state').val())) {
+                    $("#stateError").text("State name cannot be a number")
+                    isValid = false
+                }
+                if ($("#pincode").val().trim() === "") {
+                    $("#zipcodeError").text("pincode is required");
+                    isValid = false;
+                } else if (!/^\d+$/.test($('#pincode').val())) {
+                    $("#zipcodeError").text("Only digits are allowed here")
+                    isValid = false
+                } else if ($("#pincode").val().length != 6) {
+                    $("#zipcodeError").text("Pincode should be 6 digits long");
+                    isValid = false;
+                }
+                if ($("#phone").val().trim() === "") {
+                    $("#phoneError").text("phone is required");
+                    isValid = false;
+                } else if (!/^\d+$/.test($('#phone').val())) {
+                    $("#phoneError").text("Only digits are allowed here")
+                    isValid = false
+                }
+                else if (($('#phone').val().length != 10)) {
+                    $("#phoneError").text("Phone number should conatin 10 digits")
+                    isValid = false
+                } else if (!/^[789]/.test($('#phone').val())) {
+                    $("#phoneError").text("Invalid number")
+                    isValid = false
+                }
+                if ($("#email").val().trim() === "") {
+                    $("#emailError").text("email is required");
+                    isValid = false;
+                } else if (!emailPattern.test($('#email').val())) {
+                    $("#emailError").text("Enter a valid email");
+                    isValid = false;
+                }
+                if ($("#landMark").val().trim() === "") {
+                    $("#landMarkError").text("landMark is required");
+                    isValid = false;
+                } else if (/\d/.test($('#landMark').val())) {
+                    $("#landMark").text("LandMark name cannot be a number")
+                    isValid = false
+                }
+                return isValid;
+            }
+        });
+        function addressEdit(id) {
+            console.log(id)
+            fetch(`/profile/editAddress?id=${id}`)
+                .then((res) => res.text())
+                .then((data) => {
+                    console.log(id)
+                    document.getElementById("edit-content").innerHTML = data
+                    $(document).ready(function () {
+                        // Handle form submission
+                        $("#editAddress").submit(function (event) {
+                            event.preventDefault()
+                            //alert("inside the submit")
+                            const validated = validateFormAddAddress()
+                            const formData = $(this).serialize()
+                            if (validated) {
+                                console.log(id)
+                                //alert("Validated Successfully")
+                                $.ajax({
+                                    method: "POST",
+                                    url: `/profile/editingAddress?id=${id}`,
+                                    data: formData,
+                                    success: function (response) {
+                                        if (response.response == "updatedSuccessfully") {
+                                            Swal.fire({
+                                                icon: "success",
+                                                title: "Updated Successfully",
+                                            })
+                                        } else {
+                                            Swal.fire({
+                                                icon: "error",
+                                                title: "Not Updated",
+                                            })
+                                        }
+                                    },
+                                    error: function (err) {
+                                        console.log(err)
+                                    },
+                                })
+                            }
+                        })
+                        // to validate the form
+                        function validateFormAddAddress() {
+                            var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
+                            //alert("inside form validation")
+                            var isValid = true
+                            // Reset error messages
+                            $("p[id$='Error']").text("")
+                            // Validation logic for each input
+                            if ($("#firstName").val().trim() === "") {
+                                $("#firstNameError").text("First name is required")
+                                isValid = false
+                            } else if (/\d/.test($('#firstName').val())) {
+                                $("#firstNameError").text("fisrt name cannot be a number")
+                                isValid = false
+                            }
+                            if ($("#lastName").val().trim() === "") {
+                                $("#lastNameError").text("Last name is required")
+                                isValid = false
+                            }
+                            else if (/\d/.test($('#lastName').val())) {
+                                $("#lastNameError").text("last name cannot be a number")
+                                isValid = false
+                            }
+                            if ($("#address").val().trim() === "") {
+                                $("#addressError").text("Address is required")
+                                isValid = false
+                            }
+                            if ($("#city").val().trim() === "") {
+                                $("#cityError").text("City is required")
+                                isValid = false
+                            }
+                            else if (/\d/.test($('#city').val())) {
+                                $("#cityError").text("city name cannot be a number")
+                                isValid = false
+                            }
+                            if ($("#state").val().trim() === "") {
+                                $("#stateError").text("State is required")
+                                isValid = false
+                            }
+                            else if (/\d/.test($('#state').val())) {
+                                $("#stateError").text("State name cannot be a number")
+                                isValid = false
+                            }
+                            if ($("#pincode").val().trim() === "") {
+                                $("#zipcodeError").text("pincode is required")
+                                isValid = false
+                            } else if (!/^\d+$/.test($("#pincode").val())) {
+                                // The regular expression /^\d+$/ checks if the input contains only digits (0-9).
+                                $("#zipcodeError").text("Pincode should only contain digits");
+                                isValid = false;
+                            } else if ($("#pincode").val().length != 6) {
+                                $("#zipcodeError").text("Pincode should be 6 digits long");
+                                isValid = false;
+                            }
+                            if ($("#phone").val().trim() === "") {
+                                $("#phoneError").text("phone is required")
+                                isValid = false
+                            } else if (!/^\d+$/.test($("#phone").val())) {
+                                // The regular expression /^\d+$/ checks if the input contains only digits (0-9).
+                                $("#phoneError").text("Phone number should only contain digits");
+                                isValid = false;
+                            } else if (($('#phone').val().length != 10)) {
+                                $("#phoneError").text("Phone number should conatin 10 digits")
+                                isValid = false
+                            } else if (!/^[789]/.test($('#phone').val())) {
+                                $("#phoneError").text("Invalid number")
+                                isValid = false
+                            }
+                            if ($("#email").val() === "") {
+                                $("#emailError").text("email is required")
+                                isValid = false
+                            } else if (!emailPattern.test($('#email').val())) {
+                                $("#emailError").text("Enter a valid email")
+                                isValid = false
+                            }
+                            if ($("#landMark").val().trim() === "") {
+                                $("#landMarkError").text("landMark is required")
+                                isValid = false
+                            } else if (/\d/.test($('#landMark').val())) {
+                                $("#stateError").text("LandMark cannot be a number")
+                                isValid = false
+                            }
+                            return isValid
+                        }
+                    })
+                })
+                .catch((err) => console.log("Error occured" + err))
+        }
+        function personalInfoEdit() {
+            fetch("/profile/editUserProfile")
+                .then((res) => res.text())
+                .then((data) => {
+                    document.getElementById("edit-content").innerHTML = data
+                    $("#userDetailsFormEdit").submit(function (e) {
+                        e.preventDefault()
+                        const isvalid = validateUserFrom()
+                        const formData = $(this).serialize()
+                        console.log(formData)
+                        if (isvalid) {
+                            $.ajax({
+                                method: "POST",
+                                url: "/profile/editingUserDetails",
+                                data: formData,
+                                success: function (response) {
+                                    if (response.response == "updated") {
+                                        Swal.fire({
+                                            icon: "success",
+                                            title: "Updated Successfully",
+                                        })
+                                    } else if (response.response == "notUpdated") {
+                                        Swal.fire({
+                                            icon: "error",
+                                            title: "Not Updated",
+                                        })
+                                    }
+                                },
+                                error: function (err) {
+                                    console.log(err)
+                                },
+                            })
+                        }
+                    })
+                }).catch((err) => console.log("Error occured" + err))
+        }
+        function validateUserFrom() {
+            let valid = true
+            var phonePattern = /^[0-9]+$/
+            var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
+            // document.getElementById('f-name').addEventListener('input',()=>{
+            //         var firstName = document.getElementById("f-name").value
+            //         var firstNameError = document.getElementById("firstNameError")
+            //         var namePattern = /^[a-zA-Z]+$/
+            //         if (!namePattern.test(firstName)) {
+            //             firstNameError.innerHTML = "Only characters are allowed"
+            //             if (firstName.length == 0) firstNameError.innerHTML = ""
+            //             valid=false
+            //         } else {
+            //             firstNameError.innerHTML = ""
+            //             valid=true
+            //         }
+            // })
+            const firstName = document.getElementById("f-name").value
+            const lastName = document.getElementById("l-name").value
+            const email = document.getElementById("email").value
+            const phone = document.getElementById("phone").value
+            if (firstName.trim() === "") {
+                displayErrorMessage("firstNameError", "First Name cannot be empty")
+                valid = false
+            }
+            else if (/\d/.test(firstName)) {
+                displayErrorMessage("firstNameError", "First Name cannot contain digits")
+                valid = false
+            } else {
+                displayErrorMessage("firstNameError", "  ")
+            }
+            if (lastName.trim() === "") {
+                displayErrorMessage("lastNameError", "Last Name cannot be empty")
+                valid = false
+            } else if (/\d/.test(lastName)) {
+                displayErrorMessage(
+                    "lastNameError",
+                    "Last Name cannot contain digits"
+                )
+                valid = false
+            }
+            else {
+                displayErrorMessage("lastNameError", "  ")
+            }
+            if (email.trim() === "") {
+                displayErrorMessage("emailError", "Email cannot be empty")
+                valid = false
+            } else if (!emailPattern.test(email)) {
+                displayErrorMessage("emailError", "Enter a valid email")
+                valid = false
+            } else {
+                displayErrorMessage("emailError", "  ")
+            }
+            if (phone.trim() === "") {
+                displayErrorMessage("phoneError", "Phone number is required")
+                valid = false
+            }
+            if (phone.length > 10) {
+                displayErrorMessage("phoneError", "Phone number must contain 10 digits")
+                valid = false
+            }
+            if (isNaN(phone)) {
+                displayErrorMessage("phoneError", "Phone number must not contain character")
+                valid = false
+            }
+            else
+                displayErrorMessage("phoneError", "  ")
+            return valid
+        }
+        function displayErrorMessage(id, message) {
+            const errorElement = document.getElementById(id)
+            if (errorElement) {
+                errorElement.innerText = message
+            }
+        }
+    </script>
+    <script src="//frontEnd/javascripts/main.js?v=3.4"></script>
+    <script src="//frontEnd/javascripts/valid.js"></script>
+</body>
+
+</html>
