@@ -270,10 +270,20 @@
                     $("#SP").val(discountedSellingPrice)
             }
         })
+
     </script>
     <script>
         // Function to hide the success message after a specified timeout
-      
+        function hideSuccessMessage() {
+                var successMessage = document.getElementById("msg")
+                if (successMessage) {
+                    setTimeout(function () {
+                        successMessage.style.display = "none"
+                    }, 2000) // Hide the message after 5 seconds (adjust the time as needed)
+                }
+            }
+            // Call the function when the page loads
+            window.onload = hideSuccessMessage
        
     </script>
     <%- include('../partials/admin/footer.ejs') %>

@@ -8,6 +8,7 @@ const productModel = require("../model/product")
 const returnModel = require("../model/returns")
 const razorpay = require("razorpay")
 const customerModel = require("../model/Customer")
+const couponModel=require("../model/coupon")
 // const unwindItemModel = require("../model/unwindorders")
 // const { productDetails } = require("./productControler")
 // const { concurrency } = require("sharp")
@@ -39,8 +40,7 @@ const placingOrder = async (req, res) => {
         for (const element of productInfo) {
             const product_id = element.product._id
             const product_quantity = element.quantity
-            if (element.product.productStock < product_quantity) {
-                productName = element.product.productName
+            if (element.product.productStock < product_quantity && element.product.sellingPrice != req.session.totalAmount) {
                 productsUnavailable = true
                 break
             }
@@ -142,17 +142,18 @@ const placingOrder = async (req, res) => {
                                 { $inc: { productStock: -product_quantity } },
                                 { new: true }
                             )
-                            if (req.session.referalCode) {
+                            if (req.session.referalCodeApplied) {
+                                
                                 const referringUser =
                                     await customerModel.findOne({
-                                        referalCode: req.session.referalCode,
+                                        referalCode: req.session.referalCodeApplied,
                                     })
                                 if (referringUser) {
                                     // Update the referring user's wallet
                                     await customerModel.updateOne(
                                         {
                                             referalCode:
-                                                req.session.referalCode,
+                                                req.session.referalCodeApplied,
                                         },
                                         { $inc: { wallet: 100 } }
                                     )
@@ -160,6 +161,7 @@ const placingOrder = async (req, res) => {
                                     await new walletTransaction({
                                         userId: referringUser._id,
                                         type: "credit",
+                                        description:req.session.userData.firstName+" "+"Placed order by your referal code",
                                         amount: 100,
                                     }).save()
                                 }
@@ -279,7 +281,7 @@ const placingOrder = async (req, res) => {
                 }
             }
         } else {
-            res.json({ response: "out of stock", product: productName })
+            res.json({ response: "orderFailed"})
         }
     } catch (error) {
         console.log(error.message)
@@ -332,7 +334,7 @@ const orderDetails = async (req, res) => {
 const viewMyOrders = async (req, res) => {
     try {
         const user_id = req.session.userData._id
-        const myOrders = await orderedItemModel.find({ customerId: user_id })
+        const myOrders = await orderedItemModel.find({ customerId: user_id }).sort({_id:-1})
         res.render("frontEnd/my-orders", { myOrders })
     } catch (error) {
         console.log(error.message)
@@ -505,6 +507,22 @@ const cancelDetails = async (req, res) => {
         console.log(error.message)
     }
 }
+const validateOrder=async(req,res)=>{
+  try {
+    const totalAmount=req.query.Amount
+    const couponCode=req.query.coupon
+    const discount=req.query.discount
+    const couponDetails=await couponModel.findOne({code:couponCode})
+    if(totalAmount > couponDetails.minPurchase || discount == couponDetails.discount)
+    {
+        res.json({response:"valid"})
+    }
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+
 module.exports = {
     placingOrder,
     orderList,
@@ -519,4 +537,5 @@ module.exports = {
     returnOrderListing,
     returnDetails,
     cancelDetails,
+    validateOrder,
 }

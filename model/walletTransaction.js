@@ -6,6 +6,7 @@ const walletTransactionModel=new Schema({
         ref:'customer'
     },
     type:String,
+    description:String,
     amount:Number
 },{timestamps:true})
 

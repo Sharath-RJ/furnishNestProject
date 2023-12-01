@@ -83,20 +83,21 @@
                                         </div>
                                         <div class="product-content-wrap">
                                             <div class="product-category">
-                                                <a href="#">
+                                                <a href="/product/productDetails?id=<%= product._id %>">
                                                     <%= product.categoryName %>
                                                 </a>
                                             </div>
-                                            <h5 id="pro-name"><a href="#">
+                                            <h5 id="pro-name"><a href="/product/productDetails?id=<%= product._id %>">
                                                     <%= product.productName.slice(0, 55) + (product.productName.length> 55 ? '...' : '') %>
                                                 </a></h5>
                                             <div class="rating-result" title="90%">
                                                 <span>
-                                                    <span>90%</span>
+                                                    <span><%=product.discount%>%</span>
                                                 </span>
                                             </div>
                                             <div class="product-price">
-                                                <span>
+                                                <span><span style="color:green;">
+                                                   
                                                     <%= product.sellingPrice %>
                                                 </span>
                                                 <span class="old-price">

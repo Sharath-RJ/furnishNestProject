@@ -776,7 +776,7 @@
         async function updateCartCount(id) {
                 try {
                     console.log("hello world")
-                    const response =await fetch(`/cart/addToCart?id=${id}`);
+                    const response =await fetch(`/cart/addToCart?id=${id}&ajax=true`);
                     const data = await response.json();
                     console.log(data);
                     if(data.login=="no")
@@ -799,7 +799,7 @@
 
                $.ajax({
                     type: 'GET',
-                    url: `/wishList/addToWishList?id=${id}`, // Route on the server to handle adding to the wishlist
+                    url: `/wishList/addToWishList?id=${id}&ajax=true`, // Route on the server to handle adding to the wishlist
                     success: function (response) {
                         if (response.login == "no") {
                             window.location.href = "/login"

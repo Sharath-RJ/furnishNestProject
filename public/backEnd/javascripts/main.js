@@ -85,44 +85,12 @@ function generatePosition() {
 }
 setInterval(generateLocks, interval)
 generateLocks()
-function validateCategory(edit) {
-    const categoryName = document.getElementById("categoryName").value
-    const categoryImage = document.getElementById("categoryImage").value
-    const categoryDescription = document.getElementById(
-        "categoryDescription"
-    ).value
-    var categoryImageError = ""
-    var categoryNameError = ""
-    var categoryDescriptionError = ""
-    if (categoryName.trim() == "")
-        categoryNameError = "Category name is required"
-    if (edit == false) {
-        if (categoryImage.trim() == "")
-            categoryImageError = "Category image is requird"
-    }
-    if (categoryDescription.trim() == "")
-        categoryDescriptionError = "catergory description is reqired"
-    if (categoryNameError || categoryImageError || categoryDescriptionError) {
-        document.getElementById("categoryNameError").innerHTML =
-            categoryNameError
-        document.getElementById("categoryImageError").innerHTML =
-            categoryImageError
-        document.getElementById("categoryDescriptionError").innerHTML =
-            categoryDescriptionError
-        return false
-    } else {
-        return true
-    }
-}
 
 
 
 
-function viewCategoryImage(event) {
-    document.getElementById("category_image").src = URL.createObjectURL(
-        event.target.files[0]
-    )
-}
+
+
 function viewProducts(p) {
     fetch(`/admin/viewProductPagination?page=${p}`)
         .then((res) => res.json())
@@ -153,110 +121,7 @@ function viewProducts(p) {
 }
 
 
-$(document).ready(function () {
-    // Handle form submission
-    $("#addCouponForm").submit(function (event) {
-        event.preventDefault()
-        // Call the form validations function
-        const isFormValid = validateCouponForm()
-        // Call the AJAX request if form validation passes
-        if (isFormValid) {
-            const formData = $(this).serialize()
-            // Send a POST request via AJAX to the server
-            $.ajax({
-                type: "POST",
-                url: "/admin/addingCoupon", // Route on the server to handle password change
-                data: formData,
-                success: function (response) {
-                    if (response.response === "added") {
-                        // Display a SweetAlert for incorrect old password
 
-                        window.location.href = "/admin/coupons"
-                    } else {
-                        Swal.fire({
-                            icon: "error",
-                            title: "Password Changed",
-                            text: "successfully",
-                        })
-                        // Password changed successfully, you can handle this case
-                        // e.g., redirect to a success page or show a success message
-                    }
-                },
-                error: function (error) {
-                    // Handle other errors, if any
-                },
-            })
-        }
-    })
-})
-
-function validateCouponForm() {
-    // Initialize a flag to check if the form is valid
-    var formIsValid = true
-
-    // Reset any previous error messages
-    $("p.text-danger").text("")
-
-    // Validation for the "Code" field
-    var couponCode = $("#couponCode").val()
-    if (couponCode === "") {
-        $("#couponCodeError").text("Code is required.")
-        formIsValid = false
-    }
-
-    // Validation for the "Description" field
-    var couponDescription = $("#couponDescription").val()
-    if (couponDescription === "") {
-        $("#couponDescriptionError").text("Description is required.")
-        formIsValid = false
-    }
-
-    // Validation for the "Min Purchase" field
-    var minPurchase = $("#minPurchase").val()
-    if (minPurchase === "") {
-        $("#minPurchaseError").text("Min Purchase is required.")
-        formIsValid = false
-    } else if (isNaN(minPurchase) || parseFloat(minPurchase) < 0) {
-        $("#minPurchaseError").text("Min Purchase must be a positive number.")
-        formIsValid = false
-    }
-
-    // Validation for the "Expiry" field
-    var couponExpiry = $("#couponExpiry").val()
-    if (couponExpiry === "") {
-        $("#couponExpiryError").text("Expiry is required.")
-        formIsValid = false
-    } else if (!/^\d{4}-\d{2}-\d{2}$/.test(couponExpiry)) {
-        $("#couponExpiryError").text("Expiry must be in YYYY-MM-DD format.")
-        formIsValid = false
-    }
-
-    // Validation for the "Discount" field
-    var couponDiscount = $("#couponDiscount").val()
-    if (couponDiscount === "") {
-        $("#couponDiscountError").text("Discount is required.")
-        formIsValid = false
-    } else if (isNaN(couponDiscount) || parseFloat(couponDiscount) < 0) {
-        $("#couponDiscountError").text("Discount must be a positive number.")
-        formIsValid = false
-    }
-
-    // Validation for the "Max Amount" field
-    var maxAmount = $("#maxAmount").val().trim()
-    if (maxAmount === "") {
-        $("#maxAmountError").text("Max Amount is required.")
-        formIsValid = false
-    } else if (isNaN(maxAmount) || parseFloat(maxAmount) < 0) {
-        $("#maxAmountError").text("Max Amount must be a positive number.")
-        formIsValid = false
-    }
-
-    return formIsValid
-}
-
-function convertUpperCase(inputElement) {
-    inputElement.value = inputElement.value.toUpperCase()
-}
 
 function validateCouponForm() {
     // Initialize a flag to check if the form is valid
@@ -576,53 +441,10 @@ function viewImage(event, id) {
 
 
 
-function productImageDelete(index, id) {
-    Swal.fire({
-        title: "Confirm Deletion",
-        text: "Are you sure you want to delete product image?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#d33",
-        cancelButtonColor: "#3085d6",
-        confirmButtonText: "Yes, Delete",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                type: "GET",
-                url: `/admin/productImageDelete?index=${index}>&id=${id}`, // Route on the server to handle password change
 
-                success: function (response) {
-                    if (response.response == "deleted") {
-                        // Display a SweetAlert for incorrect old password
-                        $(`#img_cont_${index}`).remove()
-                    } else {
-                        Swal.fire({
-                            icon: "error",
-                            title: "error occured",
-                        })
-                        // Password changed successfully, you can handle this case
-                        // e.g., redirect to a success page or show a success message
-                    }
-                },
-                error: function (error) {
-                    // Handle other errors, if any
-                },
-            })
-        }
-    })
-}
 
 // Function to hide the success message after a specified timeout
-function hideSuccessMessage() {
-    var successMessage = document.getElementById("msg")
-    if (successMessage) {
-        setTimeout(function () {
-            successMessage.style.display = "none"
-        }, 2000) // Hide the message after 5 seconds (adjust the time as needed)
-    }
-}
-// Call the function when the page loads
-window.onload = hideSuccessMessage
+
 var categoryDiscount = null
 function provideDiscount(id) {
     $.ajax({

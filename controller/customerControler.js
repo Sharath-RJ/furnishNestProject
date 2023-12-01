@@ -21,7 +21,61 @@ const redirectURL = "http://localhost:3000/google/callback"
 let storedOTP
 const loginPage = async (req, res) => {
     try {
-        if (req.session.User) {
+        if(req.query.name)
+        { 
+            const minPrice = parseFloat(req.query.minPrice) || -Infinity
+            const maxPrice = parseFloat(req.query.maxPrice) || Infinity
+            if (req.session.userData) {
+                var user_id = req.session.userData._id
+                var wish_list = await wishListModel.findOne({ userID: user_id })
+            } else {
+                wish_list = []
+            }
+
+            let perpage = 5
+            let page = parseInt(req.query.page) || 1
+            const categories = await categoryModel.find()
+            const cart_products = await cartModel.find()
+            const category = req.query.name
+            if (category !== undefined) {
+                req.session.categoryName = category
+            }
+            const productCount = await productModel.countDocuments({
+                productCategory: req.session.categoryName,
+                sellingPrice: { $gte: minPrice, $lte: maxPrice },
+            })
+            const count = Math.ceil(productCount / perpage)
+            const products = await productModel
+                .find({
+                    productCategory: req.session.categoryName,
+                    sellingPrice: { $gte: minPrice, $lte: maxPrice },
+                })
+                .skip((page - 1) * perpage)
+                .limit(perpage)
+            if (req.query.ajax == "true")
+                res.json({
+                    cat: req.session.categoryName,
+                    products: products,
+                    productCount: productCount,
+                    page: page,
+                    count: count,
+                })
+            else if (products) {
+                res.render("frontEnd/shop-grid-left", {
+                    categories,
+                    products,
+                    cart_products,
+                    count,
+                    cat: req.session.categoryName,
+                    page,
+                    wish_list,
+                })
+            }
+            // If it's a regular request, render the entire page
+            else res.send('<script>alert("Something went wrong")</script>')
+        }
+        else if (req.session.User) {
+            console.log()
             const user_id = req.session.userData._id
             const cart_products = await cartModel.find({ customerId: user_id })
             const wishList = await wishListModel.findOne({ userID: user_id })
@@ -52,6 +106,7 @@ const loginPage = async (req, res) => {
             const referalCodeAvailable = await customerModel.find({
                 referalCode: req.session.referalCode,
             })
+            console.log("Refeeral code availability",referalCodeAvailable)
             if (req.session.referalCode && referalCodeAvailable.length > 0) {
                 // Update the referred user's wallet
                 await customerModel.updateOne(
@@ -62,9 +117,12 @@ const loginPage = async (req, res) => {
                 await new walletTransaction({
                     userId: req.session.userData._id,
                     type: "credit",
+                    description:"By using the referal code"+"  "+req.session.referalCode,
                     amount: 50,
                 }).save()
-                req.session.referalCode = false
+               
+                req.session.referalCodeApplied = req.session.referalCode
+                req.session.referalCode=false
             }
             const userName = req.session.userData.firstName
             console.log(userName)
@@ -130,10 +188,10 @@ const sendingOTP = (req, res) => {
         const message = req.query.msg
         const data = req.session.temp
         res.render("frontEnd/page-otp")
-        const accountSid = "ACa046474223677b94f730ff32a7f020dd"
-        const authToken = "fc9b714e0a517fede19249c347523769"
+        const accountSid = "AC4c41679d8d3939f2e76052f80f5ae3f6"
+        const authToken = "b4c8dae855a8fd03af33042d3c66c483"
         const client = new twilio(accountSid, authToken)
-        const fromPhoneNumber = "+12402977901"
+        const fromPhoneNumber = "+18567767065"
         const toPhoneNumber = "+91" + data.phone
         var Otp = Math.floor(1000 + Math.random() * 9000)
         storedOTP = Otp
@@ -165,6 +223,7 @@ const insertUser = async (req, res) => {
             const { firstName, lastName, email, phone, password, referalCode } =
                 userData
             if (referalCode) req.session.referalCode = referalCode
+            console.log("rrrrrrrrrreeeeeeeeeefffff     jjjjjjjjjjjjjjjjjjjfffin insert user page",req.session.referalCode)
             const hashedPassword = await bcrypt.hash(password, 10)
             const newuser = new customerModel({
                 firstName: firstName,
@@ -178,8 +237,8 @@ const insertUser = async (req, res) => {
                 referalCode: generateRandomCode(6),
             })
             await newuser.save()
-            req.session.is_block = true
-            res.render("frontEnd/page-login-register", {
+            
+            res.render("frontEnd/login.ejs", {
                 success: "Registered Successfully Now Login",
             })
         } else {
@@ -228,6 +287,7 @@ const userLogin = async (req, res) => {
             )
             if (matchPassword) {
                 req.session.User = true
+                req.session.is_block = false
                 res.redirect("/")
             } else {
                 res.render("frontEnd/login", {
@@ -362,19 +422,47 @@ const resetPasswordLoad = (req, res) => {
         console.log(error.message)
     }
 }
+
+   
 const search = async (req, res) => {
     try {
+          let page = req.query.page || 1
+          let perpage = 8
+        let userData=req.session.userData
+        if(userData){
+            var wish_list = await wishListModel.find({ userID :userData._id})
+            var cart_products = await cartModel.find({customerId:userData._id})
+            var userName = req.session.userData.firstName
+        }else{
+            wish_list=[]
+            cart_products=[]
+        }
         const { searchItem } = req.body
         if (!searchItem) {
             return res.status(400).json({ error: "Search query is missing." })
         }
-        const results = await productModel.find({
+        const resultCount = await productModel.find({
             $or: [
                 { productCategory: { $regex: new RegExp(searchItem, "i") } },
                 { productName: { $regex: new RegExp(searchItem, "i") } },
             ],
-        })
-        res.render("frontEnd/searchResult", { results })
+        }).count()
+         const count = Math.ceil(resultCount / perpage)
+          const results = await productModel
+              .find({
+                  $or: [
+                      {
+                          productCategory: {
+                              $regex: new RegExp(searchItem, "i"),
+                          },
+                      },
+                      { productName: { $regex: new RegExp(searchItem, "i") } },
+                  ],
+              })
+              .skip((page - 1) * perpage)
+              .limit(perpage)
+        const categories=await categoryModel.find()
+        res.render("frontEnd/searchResult",{ results,categories,wish_list,cart_products,user:userName,count,page})
     } catch (error) {
         console.log(error.message)
     }

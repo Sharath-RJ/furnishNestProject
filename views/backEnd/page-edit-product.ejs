@@ -209,6 +209,83 @@
         }
         return isValid
     }
+
+     let categoryDiscount = null
+        function provideDiscount(id) {
+            $.ajax({
+                type: "GET",
+                url: `/admin/product/provideDiscount?id=${id}`,
+                success: function (response) {
+                    if (response.success) {
+                        var discount = response.discount
+                        var productDiscount = $("#productDiscount").val()
+                        var regularPrice = $("#RP").val()
+                        var sellingPrice =
+                            regularPrice - Math.ceil((regularPrice * discount) / 100)
+                        categoryDiscount = discount
+                        if (productDiscount < categoryDiscount)
+                            $("#SP").val(sellingPrice)
+                    }
+                },
+                error: function (error) { },
+            })
+        }
+
+        // Attach a keyup event listener to the input field with id "SP"
+        $("#productDiscount").on("keyup", function () {
+            var regularPrice = $("#RP").val()
+            console.log(categoryDiscount)
+
+            var productDiscount = $(this).val()
+
+            if (productDiscount < 0) {
+                $("#productDiscountError").text("Negative nuumber not allowed")
+            } else if (productDiscount > 100) {
+                $("#productDiscountError").text("Should less than 100")
+            } else {
+                $("#productDiscountError").text("")
+                var discountedSellingPrice =
+                    regularPrice - Math.ceil((regularPrice * productDiscount) / 100)
+                if (categoryDiscount < productDiscount)
+                    $("#SP").val(discountedSellingPrice)
+            }
+        })
+
+        function productImageDelete(index, id) {
+                Swal.fire({
+                    title: "Confirm Deletion",
+                    text: "Are you sure you want to delete product image?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#d33",
+                    cancelButtonColor: "#3085d6",
+                    confirmButtonText: "Yes, Delete",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: "GET",
+                            url: `/admin/product/productImageDelete?index=${index}>&id=${id}`, // Route on the server to handle password change
+
+                            success: function (response) {
+                                if (response.response == "deleted") {
+                                    // Display a SweetAlert for incorrect old password
+                                    $(`#img_cont_${index}`).remove()
+                                } else {
+                                    Swal.fire({
+                                        icon: "error",
+                                        text: "error occured",
+                                    })
+                                    // Password changed successfully, you can handle this case
+                                    // e.g., redirect to a success page or show a success message
+                                }
+                            },
+                            error: function (error) {
+                                // Handle other errors, if any
+                            },
+                        })
+                    }
+                })
+            }
     </script>
    
     <%- include('../partials/admin/footer.ejs') %>

@@ -167,6 +167,36 @@
                                             console.log(error)
                                         })
                                 }
+
+                                  function validateCategory() {
+                                        const categoryName = document.getElementById("categoryName").value
+                                        const categoryImage = document.getElementById("categoryImage").value
+                                        const categoryDescription = document.getElementById(
+                                            "categoryDescription"
+                                        ).value
+                                        var categoryImageError = ""
+                                        var categoryNameError = ""
+                                        var categoryDescriptionError = ""
+                                        if (categoryName.trim() == "")
+                                            categoryNameError = "Category name is required"
+                                        if (edit == false) {
+                                            if (categoryImage.trim() == "")
+                                                categoryImageError = "Category image is requird"
+                                        }
+                                        if (categoryDescription.trim() == "")
+                                            categoryDescriptionError = "catergory description is reqired"
+                                        if (categoryNameError || categoryImageError || categoryDescriptionError) {
+                                            document.getElementById("categoryNameError").innerHTML =
+                                                categoryNameError
+                                            document.getElementById("categoryImageError").innerHTML =
+                                                categoryImageError
+                                            document.getElementById("categoryDescriptionError").innerHTML =
+                                                categoryDescriptionError
+                                            return false
+                                        } else {
+                                            return true
+                                        }
+                                    }
                         </script>
                     </div> <!-- .col// -->
                 </div> <!-- .row // -->

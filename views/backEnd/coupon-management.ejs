@@ -112,7 +112,109 @@
         </div> <!-- card .// -->
     </section> <!-- content-main end// -->
     <script>
-   
+   function convertUpperCase(inputElement) {
+        inputElement.value = inputElement.value.toUpperCase()
+    }
+
+    $(document).ready(function () {
+            // Handle form submission
+            $("#addCouponForm").submit(function (event) {
+                event.preventDefault()
+                // Call the form validations function
+                const isFormValid = validateCouponForm()
+                // Call the AJAX request if form validation passes
+                if (isFormValid) {
+                    const formData = $(this).serialize()
+                    // Send a POST request via AJAX to the server
+                    $.ajax({
+                        type: "POST",
+                        url: "/admin/coupon/addingCoupon", // Route on the server to handle password change
+                        data: formData,
+                        success: function (response) {
+                            if (response.response === "added") {
+                                // Display a SweetAlert for incorrect old password
+
+                                window.location.href = "/admin/coupon/couponList"
+                            } else if(response.response=="exists") {
+                                Swal.fire({
+                                    icon: "error",
+        
+                                    text: "Coupon Already Exists",
+                                })
+                              
+                            }
+                        },
+                        error: function (error) {
+                            // Handle other errors, if any
+                        },
+                    })
+                }
+            })
+        })
+
+        function validateCouponForm() {
+                // Initialize a flag to check if the form is valid
+                var formIsValid = true
+
+                // Reset any previous error messages
+                $("p.text-danger").text("")
+
+                // Validation for the "Code" field
+                var couponCode = $("#couponCode").val()
+                if (couponCode === "") {
+                    $("#couponCodeError").text("Code is required.")
+                    formIsValid = false
+                }
+
+                // Validation for the "Description" field
+                var couponDescription = $("#couponDescription").val()
+                if (couponDescription === "") {
+                    $("#couponDescriptionError").text("Description is required.")
+                    formIsValid = false
+                }
+
+                // Validation for the "Min Purchase" field
+                var minPurchase = $("#minPurchase").val()
+                if (minPurchase === "") {
+                    $("#minPurchaseError").text("Min Purchase is required.")
+                    formIsValid = false
+                } else if (isNaN(minPurchase) || parseFloat(minPurchase) < 0) {
+                    $("#minPurchaseError").text("Min Purchase must be a positive number.")
+                    formIsValid = false
+                }
+
+                // Validation for the "Expiry" field
+                var couponExpiry = $("#couponExpiry").val()
+                if (couponExpiry === "") {
+                    $("#couponExpiryError").text("Expiry is required.")
+                    formIsValid = false
+                } else if (!/^\d{4}-\d{2}-\d{2}$/.test(couponExpiry)) {
+                    $("#couponExpiryError").text("Expiry must be in YYYY-MM-DD format.")
+                    formIsValid = false
+                }
+
+                // Validation for the "Discount" field
+                var couponDiscount = $("#couponDiscount").val()
+                if (couponDiscount === "") {
+                    $("#couponDiscountError").text("Discount is required.")
+                    formIsValid = false
+                } else if (isNaN(couponDiscount) || parseFloat(couponDiscount) < 0) {
+                    $("#couponDiscountError").text("Discount must be a positive number.")
+                    formIsValid = false
+                }
+
+                // Validation for the "Max Amount" field
+                var maxAmount = $("#maxAmount").val().trim()
+                if (maxAmount === "") {
+                    $("#maxAmountError").text("Max Amount is required.")
+                    formIsValid = false
+                } else if (isNaN(maxAmount) || parseFloat(maxAmount) < 0) {
+                    $("#maxAmountError").text("Max Amount must be a positive number.")
+                    formIsValid = false
+                }
+
+                return formIsValid
+            }
         
     </script>
     <%- include('../partials/admin/footer.ejs') %>

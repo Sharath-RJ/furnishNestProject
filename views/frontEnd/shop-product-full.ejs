@@ -2,11 +2,7 @@
     <main class="main">
         <div class="page-header breadcrumb-wrap">
             <div class="container">
-                <!-- <div class="breadcrumb">
-                    <a href="index.html" rel="nofollow">Home</a>
-                    <span></span> Fashion
-                    <span></span> Abstract Print Patchwork Dress
-                </div> -->
+             
             </div>
         </div>
         <section class="mt-50 mb-50">
@@ -85,11 +81,7 @@
                                         </div>
                                         <div class="bt-1 border-color-1 mt-30 mb-30"></div>
                                         <div class="detail-extralink">
-                                            <!-- <div class="detail-qty border radius">
-                                                <a href="#" class="qty-down"><i class="fas fa-angle-down"></i></a>
-                                                <span class="qty-val">1</span>
-                                                <a href="#" class="qty-up"><i class="fas fa-angle-up"></i></a>
-                                            </div> -->
+                                           
                                             <div class="product-extra-link2">
                                                 <a onclick="updateCartCount('<%= productDetails._id %>')"> <button
                                                         type="submit" id="add-to-cart"
@@ -105,9 +97,7 @@
                                             </div>
                                         </div>
                                         <ul class="product-meta font-xs color-grey mt-50">
-                                            <!-- <li class="mb-5">SKU: <a href="#">FWM15VKT</a></li>
-                                            <li class="mb-5">Tags: <a href="#" rel="tag">Cloth</a>, <a href="#"
-                                                    rel="tag">Women</a>, <a href="#" rel="tag">Dress</a> </li> -->
+                                      
                                             <% if (productDetails.productStock>=1) { %>
                                                 <li>Availability:<span class="in-stock text-success ml-5">
                                                         <%= productDetails.productStock %> Items In
@@ -199,7 +189,7 @@
     <script>
         async function updateCartCount(id) {
                 try {
-                    const response = await fetch(`/addToCart?id=${id}`);
+                    const response = await fetch(`/cart/addToCart?id=${id}`);
                     const data = await response.json();
 
                     console.log(data);
@@ -237,7 +227,7 @@
 
                 $.ajax({
                     type: 'GET',
-                    url: `/addToWishList?id=${id}`, // Route on the server to handle adding to the wishlist
+                    url: `/cart/addToWishList?id=${id}`, // Route on the server to handle adding to the wishlist
                     success: function (response) {
                         if (response.response === 'Added') {
                             // Heart color to red
@@ -257,7 +247,7 @@
                             document.getElementById(`action-btn_${id}`).classList.add('changeColorRed');
                         } else if (response.response === "alreadyAdded") {
                             // Handle removal from wishlist here (similar logic as in your code)
-                            fetch(`/removeWishList?id=${id}`)
+                            fetch(`/cart/removeWishList?id=${id}`)
                                 .then((res) => res.json())
                                 .then((data) => {
                                     if (data.response === "removed") {

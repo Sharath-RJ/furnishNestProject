@@ -68,7 +68,7 @@
                                 <h3 class="title-detail mt-30">Colorful Pattern Shirts HD450</h3>
                                 <div class="product-detail-rating">
                                     <div class="pro-details-brand">
-                                        <span> Brands: <a href="shop-grid-right.html">Bootstrap</a></span>
+                                        <span> Brands: <a href="#">Bootstrap</a></span>
                                     </div>
                                     <div class="product-rate-cover text-end">
                                         <div class="product-rate d-inline-block">
@@ -169,9 +169,8 @@
                         <script>
                             function searchValidate(){
                               var search=  document.getElementById('searchInput').value
-                              alert(search)
                               if(search.trim()==""){
-                                window.location.reload()
+                                
                                 return false
                               }else{
                                 return true
@@ -207,19 +206,19 @@
                     <div class="header-nav d-none d-lg-flex">
                         <div class="main-categori-wrap d-none d-lg-block">
                             <a class="categori-button-active" href="#">
-                                <span class="fi-rs-apps"></span> Browse Categories
+                                <span class=""></span> Browse Categories
                             </a>
                             <div class="categori-dropdown-wrap categori-dropdown-active-large">
                                 <ul>
                                     <% for(category of categories) { %>
-                                        <li><a href="/AllProduct_Category?name=<%=category.categoryName%>"><i
-                                                    class="evara-font-desktop"></i>
+                                        <li><a href="/?name=<%=category.categoryName%>"><i
+                                                    class=""></i>
                                                 <%= category.categoryName %>
                                             </a>
                                         </li>
                                         <% } %>
                                 </ul>
-                                <div class="more_categories">Show more...</div>
+                                
                             </div>
                         </div>
                         <div class="main-menu main-menu-padding-1 main-menu-lh-2 d-none d-lg-block">

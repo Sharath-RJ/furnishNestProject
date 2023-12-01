@@ -17,4 +17,5 @@ router.get("/updateStatus",is_Admin, orderControler.updateStatus)
 router.get("/returns",is_Admin, orderControler.returnOrderListing)
 router.get("/returnDetails",is_Admin, orderControler.returnDetails)
 router.get("/cancelDetails",is_Admin, orderControler.cancelDetails)
+router.get("/validateOrder",is_User,is_Blocked,orderControler.validateOrder)
 module.exports=router

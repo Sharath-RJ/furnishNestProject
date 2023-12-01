@@ -23,9 +23,7 @@ const addingCoupon = async (req, res) => {
             code: couponCode,
         })
         if (alreadyExists.length !== 0)
-            res.send(
-                '<script>alert("Coupon already exists");window.location.href="/admin/coupons"</script>'
-            )
+           res.json({response:"exists"})
         else {
             const formatedDate = new Date(couponExpiry)
             const formatedDateString = `${formatedDate.getDate()}-${
@@ -66,7 +64,7 @@ const editingCoupon = async (req, res) => {
             updatedInfo,
             { new: true }
         )
-        if (updateCoupon) res.redirect("/admin/coupons")
+        if (updateCoupon) res.redirect("/admin/coupon/couponList")
         else res.send("Error while updating")
     } catch (error) {
         console.log(error.message)

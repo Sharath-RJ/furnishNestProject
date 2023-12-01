@@ -129,7 +129,7 @@
                                     <% orderDetails.products.forEach(element=> {%>
                                         <tr>
                                             <td>
-                                                <a class="itemside" href="#">
+                                                <a class="itemside" href="/product/productDetails?id=<%=element._id%>">
                                                     <div class="left">
                                                         <img src="/backEnd/images/cropped_image/<%= element.image[0] %>"
                                                             width="40" height="40" class="img-xs" alt="Item">
@@ -187,7 +187,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <!-- <a class="btn btn-primary" href="#">View Order Tracking</a> -->
+                       
                     </div>
                     <div class="col-lg-1"></div>
                 </div>
@@ -245,7 +245,7 @@
        function  sendReturnRequest(id, reason){
              $.ajax({
                type: 'POST',
-               url: `/returnOrder?id=${id}`, // Route on the server to handle cancel request
+               url: `/order/returnOrder?id=${id}`, // Route on the server to handle cancel request
                data: {
                    reason: reason,
                },
@@ -262,8 +262,7 @@
                            icon: 'error',
                            html: '<p style="color:red">Already Cancelled</p>',
                        });
-                       // Cancelation failed, you can handle this case
-                       // e.g., redirect to an error page or show an error message
+                 
                    } else {
                        Swal.fire({
                            icon: 'error',
@@ -330,7 +329,7 @@
             function sendCancelRequest(id, reason) {
                 $.ajax({
                     type: 'POST',
-                    url: `/cancelOrder?id=${id}`, // Route on the server to handle cancel request
+                    url: `/order/cancelOrder?id=${id}`, // Route on the server to handle cancel request
                     data:{
                         reason:reason,
                     },

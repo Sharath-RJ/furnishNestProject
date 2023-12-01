@@ -17,7 +17,6 @@ const userProfileLoad = async (req, res) => {
         const myOrders = await orderedItemModel
             .find({ customerId: user_id })
             .sort({ _id: -1 })
-        console.log(myOrders[0].products[0].image[0],"gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg")
         const address = await addressModel.find({ customerId: user_id })
         res.render("frontEnd/my-account", {
             userDetails,

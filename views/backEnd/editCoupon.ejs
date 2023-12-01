@@ -13,7 +13,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-3">
-                        <form action="/admin/editingCoupon?id=<%= coupon._id %>" method="post" onsubmit="return validateCouponForm()" id="addCouponForm">
+                        <form action="/admin/coupon/editingCoupon?id=<%= coupon._id %>" method="post" onsubmit="return validateCouponForm()" id="addCouponForm">
                             <div class="mb-2">
                                 <label for="" class="form-label">Code</label>
                                 <input type="text" oninput="convertUpperCase(this)" value="<%= coupon.code %>" placeholder="Type here" name="code" class="form-control"
@@ -72,41 +72,7 @@
     </section> <!-- content-main end// -->
     <script>
 
-        // $(document).ready(function () {
-        //     // Handle form submission
-        //     $('#addCouponForm').submit(function (event) {
-        //         event.preventDefault();
-        //         // Call the form validations function
-        //         //  const isFormValid = validateForm();
-        //         // Call the AJAX request if form validation passes
-        //         if (true) {
-        //             const formData = $(this).serialize();
-        //             // Send a POST request via AJAX to the server
-        //             $.ajax({
-        //                 type: 'POST',
-        //                 url: '/admin/addingCoupon', // Route on the server to handle password change
-        //                 data: formData,
-        //                 success: function (response) {
-        //                     if (response.response === 'added') {
-        //                         // Display a SweetAlert for incorrect old password
-        //                         window.location.href = "/admin/coupons"
-        //                     } else {
-        //                         Swal.fire({
-        //                             icon: 'error',
-        //                             title: 'Password Changed',
-        //                             text: 'successfully',
-        //                         });
-        //                         // Password changed successfully, you can handle this case
-        //                         // e.g., redirect to a success page or show a success message
-        //                     }
-        //                 },
-        //                 error: function (error) {
-        //                     // Handle other errors, if any
-        //                 }
-        //             });
-        //         }
-        //     });
-        // });
+       
 
          function validateCouponForm() {
 
