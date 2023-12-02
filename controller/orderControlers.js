@@ -35,18 +35,19 @@ const placingOrder = async (req, res) => {
                 }
             })
         )
-        var productsUnavailable = false
-        let productName = ""
+        var productsAvailable = false
         for (const element of productInfo) {
             const product_id = element.product._id
             const product_quantity = element.quantity
-            if (element.product.productStock < product_quantity && element.product.sellingPrice != req.session.totalAmount) {
-                productsUnavailable = true
+    
+            if (element.product.productStock > product_quantity || element.product.sellingPrice != req.session.totalAmount) {
+                productsAvailable = true
                 break
             }
         }
+       
         //storing those data to order table
-        if (!productsUnavailable) {
+        if (productsAvailable==false) {
             function generateRazorpay(orderid, totalamount) {
                 return new Promise((resolve, reject) => {
                     var options = {

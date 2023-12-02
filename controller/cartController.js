@@ -3,31 +3,42 @@ const productModel = require("../model/product")
 const addressModel = require("../model/address")
 const addToCart = async (req, res) => {
     try {
-        let outOfStock = false
-        const user_id = req.session.userData._id
-        console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhh",user_id)
         const product_id = req.query.id
-        const product = await productModel.findById(product_id)
-        const productExists = await cartModel.find({ productId: product_id })
-        if (productExists.length == 0) {
-            const cart = new cartModel({
-                customerId: user_id,
-                productId: product_id,
-                quantity: 1,
-            })
-            await cart.save()
-        } else if (product.productStock >= productExists[0].quantity) {
-            await cartModel.updateOne(
-                { productId: product_id },
-                { $inc: { quantity: 1 } }
-            )
-        } else {
-            outOfStock = true
+        const productDetails=await productModel.findById(product_id)
+        const productAvailable=productDetails.productStock
+        if(productAvailable>0)
+        {
+                let outOfStock = false
+                const user_id = req.session.userData._id
+                const product = await productModel.findById(product_id)
+                const productExists = await cartModel.find({
+                    productId: product_id,
+                })
+                if (productExists.length == 0) {
+                    const cart = new cartModel({
+                        customerId: user_id,
+                        productId: product_id,
+                        quantity: 1,
+                    })
+                    await cart.save()
+                } else if (product.productStock >= productExists[0].quantity) {
+                    await cartModel.updateOne(
+                        { productId: product_id },
+                        { $inc: { quantity: 1 } }
+                    )
+                } else {
+                    outOfStock = true
+                }
+                if (outOfStock) res.json({ message: "Out of Stock" })
+                else {
+                    const cart_products = await cartModel.find({
+                        customerId: user_id,
+                    })
+                    if (cart_products) res.send(cart_products)
+                }
         }
-        if (outOfStock) res.json({ message: "Out of Stock" })
-        else {
-            const cart_products = await cartModel.find({ customerId: user_id })
-            if (cart_products) res.send(cart_products)
+        else{
+            res.json({message:"notAvailable"})
         }
     } catch (error) {
         console.log(error.message)

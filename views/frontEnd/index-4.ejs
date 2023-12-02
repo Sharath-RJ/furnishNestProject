@@ -779,13 +779,20 @@
                     const response =await fetch(`/cart/addToCart?id=${id}&ajax=true`);
                     const data = await response.json();
                     console.log(data);
+                    if(data.message=="notAvailable")
+                    {
+                          Swal.fire({
+                            icon: 'error',
+                            title: 'Out of Stock',
+                        })
+                    }
                     if(data.login=="no")
                     {
                         window.location.href="/login"
                     }
                     if (data.message === "Out of Stock") {
                         alert("Out of stock");
-                    } else {
+                    } else if(data.length){
                         document.getElementById(`cart_${id}`).setAttribute("aria-label", "Added to cart");
                         document.getElementById("cart-count").innerHTML = data.length;
                     }

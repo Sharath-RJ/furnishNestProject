@@ -272,15 +272,24 @@
                 }
             }
             if (flag == 0) {
-                alert("Address is requuired")
+                 Swal.fire({
+                    icon: 'error',
+                    title: 'Address is required',
+                })
                 return false
             }
             if (!addAddressClicked && flag == 0) {
-                alert("Add Your Address")
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Add your Address',
+                })
                 return false
             }
             if (!payment) {
-                alert("Payment method is required")
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Payment method is required',
+                })
                 return false
             } else {
                 return true
@@ -345,7 +354,6 @@
     <script>
         var couponApplied=false
         var couponCodeApplied=""
-        alert(couponApplied)
         $(document).ready(() => {
             console.log(addAddressClicked)
             $('#placeOrder').submit(function (e) {
@@ -397,10 +405,10 @@
                                             })
                                         }
                                         else if (response.response == 'orderFailed') {
-                                            const dynamicContent = `<p>${response.product} <h3>is currently out of stock</h3></p>`
+                                
                                             Swal.fire({
                                                 icon: 'error',
-                                                html: dynamicContent,
+                                                title: 'Order Failed due to some issues',
                                             });
                                         } else {
                                             razorPayment(response); // Pass 'order' object to razorPayment function
