@@ -43,7 +43,7 @@
                                         <% myOrders[i].products.forEach(element=> { %>
                                             <tr>
                                                 <td class="image product-thumbnail"><img
-                                                        src="/backEnd/images/product_image/<%=element.image[0] %>"
+                                                        src="/backEnd/images/cropped_image/<%=element.image[0] %>"
                                                         alt="#">
                                                 </td>
                                                 <td class="product-des product-name">
@@ -65,9 +65,9 @@
                                                 <td class="price" data-title="Price"><span>
                                                         <%= myOrders[i].status %>
                                                     </span></td>
-                                                <td class="action" data-title="Remove"><a
-                                                        href="/order/cancelOrder?id=<%= element.id %>"
-                                                        class="text-muted">cancel</a></td>
+                                                <!-- <td class="action" data-title="Remove"><a
+                                                        href="/order/cancelOrder?id=<%#= element.id %>"
+                                                        class="text-muted">cancel</a></td> -->
                                             </tr>
                                             <% }) %>
                                                 <% } %>

@@ -419,6 +419,56 @@
                         }))
 
 
+                    }else{
+                         $.ajax({
+                            method: "POST",
+                            url: "/order/placingOrder",
+                            data: formData,
+                            success: function (response) {
+                                if (response.response == 'codsuccess') {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Order Placed Successfully',
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            window.location.href = "/order/myOrdersView"
+                                        }
+                                    })
+                                }
+                                else if (response.response == "no_balance") {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Insufficient Balance in Wallet',
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            window.location.href = "/order/myOrdersView"
+                                        }
+                                    })
+                                }
+                                else if (response.response == "walletUpdated") {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Order Placed Successfully',
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            window.location.href = "/order/myOrdersView"
+                                        }
+                                    })
+                                }
+                                else if (response.response == 'orderFailed') {
+                                    const dynamicContent = `<p>${response.product} <h3>is currently out of stock</h3></p>`
+                                    Swal.fire({
+                                        icon: 'error',
+                                        html: dynamicContent,
+                                    });
+                                } else {
+                                    razorPayment(response); // Pass 'order' object to razorPayment function
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                console.error(error);
+                            }
+                        })
                     }
                    
                 } else {

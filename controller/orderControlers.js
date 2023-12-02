@@ -509,14 +509,20 @@ const cancelDetails = async (req, res) => {
 }
 const validateOrder=async(req,res)=>{
   try {
-    const totalAmount=req.query.Amount
-    const couponCode=req.query.coupon
-    const discount=req.query.discount
-    const couponDetails=await couponModel.findOne({code:couponCode})
-    if(totalAmount > couponDetails.minPurchase || discount == couponDetails.discount)
-    {
-        res.json({response:"valid"})
+    const totalAmount = req.query.Amount
+    const couponCode = req.query.coupon
+    const discount = req.query.discount
+    const couponDetails = await couponModel.findOne({ code: couponCode })
+    console.log(couponDetails)
+
+    // Use nullish coalescing operator to provide default values
+    if (
+        totalAmount > (couponDetails?.minPurchase ?? 0) ||
+        discount === (couponDetails?.discount ?? null)
+    ) {
+        res.json({ response: "valid" })
     }
+
   } catch (error) {
     console.log(error.message)
   }
